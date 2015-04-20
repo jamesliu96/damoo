@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.0.1
+ * Damoo - HTML5 Danmaku Engine v1.0.2
  * https://github.com/jamesliu96/damoo
  *
  * Copyright (c) 2015 James Liu
@@ -24,9 +24,13 @@
     Damoo.canvas = Damoo.dom.createElement('canvas');
 
     Damoo.canvas.id = 'dm-canvas';
+
     Damoo.canvas.style.display = 'block';
     Damoo.canvas.style.cursor = 'none';
     Damoo.canvas.style.backgroundColor = "#000";
+
+    Damoo.canvas.width = window.innerWidth;
+    Damoo.canvas.height = window.innerHeight;
 
     Damoo.show = function(id) {
         _DOMcreate(id, Damoo.canvas);
@@ -35,30 +39,10 @@
         _DOMdestroy(id, Damoo.canvas);
     };
 
-    Object.defineProperty(Damoo, 'width', {
-        get: function() {
-            return Damoo.canvas.width;
-        },
-        set: function(w) {
-            Damoo.canvas.width = w;
-        }
-    });
-    Object.defineProperty(Damoo, 'height', {
-        get: function() {
-            return Damoo.canvas.height;
-        },
-        set: function(w) {
-            Damoo.canvas.height = w;
-        }
-    });
-
-    Damoo.width = window.innerWidth;
-    Damoo.height = window.innerHeight;
-
     Damoo.rows = 20;
 
     Damoo.font = {
-        size: Damoo.height / Damoo.rows,
+        size: Damoo.canvas.height / Damoo.rows,
         family: "Heiti"
     };
 
@@ -68,8 +52,8 @@
     Damoo.ctx.textAlign = "end";
     Damoo.ctx.textBaseline = "bottom";
 
-    Damoo.clear = function() {
-        Damoo.ctx.clearRect(0, 0, Damoo.width, Damoo.height);
+    var _clear = function() {
+        Damoo.ctx.clearRect(0, 0, Damoo.canvas.width, Damoo.canvas.height);
     };
 
     Damoo.thread = [];
@@ -83,20 +67,26 @@
         });
     };
 
-    var _term = function(dr) {
+    var _finish = function(dr) {
         Damoo.thread.splice(dr, 1);
-    }
+    };
+
+    var _write = function(tx, cl, x, y) {
+        Damoo.ctx.restore();
+        Damoo.ctx.save();
+        Damoo.ctx.fillStyle = cl;
+        Damoo.ctx.fillText(tx, x, y);
+    };
 
     Damoo.start = function() {
-        Damoo.clear();
+        _clear();
         for (var i = 0; i < Damoo.thread.length; i++) {
-            var x = Damoo.width - Damoo.thread[i].offset,
+            var x = Damoo.canvas.width - Damoo.thread[i].offset,
                 y = Damoo.thread[i].y = Damoo.thread[i].y || (Damoo.font.size * Math.ceil(Math.random() * Damoo.rows));
-            Damoo.ctx.fillStyle = Damoo.thread[i].color;
-            Damoo.ctx.fillText(Damoo.thread[i].text, x, y);
+            _write(Damoo.thread[i].text, Damoo.thread[i].color, x, y);
             Damoo.thread[i].offset += Damoo.thread[i].speed;
             if (x <= 0) {
-                _term(i);
+                _finish(i);
             }
         }
         setTimeout(Damoo.start, 1);
