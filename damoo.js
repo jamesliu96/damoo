@@ -43,7 +43,7 @@
 
     Damoo.font = {
         size: Damoo.canvas.height / Damoo.rows,
-        family: "Heiti"
+        family: "Arial"
     };
 
     Damoo.ctx = Damoo.canvas.getContext('2d');
