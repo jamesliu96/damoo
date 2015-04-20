@@ -14,10 +14,10 @@ Damoo requires a complete DOM with a suitable container to be fit in.
 </div>
 ```
 
-Then, import `damoo.js`.
+Then, import `damoo.js` or `damoo.min.js`.
 
 ```html
-<script type="text/javascript" src="damoo.js"></script>
+<script type="text/javascript" src="damoo.min.js"></script>
 ```
 
 Initiate the engine by writing this.

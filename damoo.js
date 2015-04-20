@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.0.0
+ * Damoo - HTML5 Danmaku Engine v1.0.1
  * https://github.com/jamesliu96/damoo
  *
  * Copyright (c) 2015 James Liu
@@ -34,17 +34,6 @@
     Damoo.hide = function(id) {
         _DOMdestroy(id, Damoo.canvas);
     };
-    Damoo.fullscreen = function() {
-        if (Damoo.canvas.requestFullscreen) {
-            Damoo.canvas.requestFullscreen();
-        } else if (Damoo.canvas.mozRequestFullscreen) {
-            Damoo.canvas.mozRequestFullscreen();
-        } else if (Damoo.canvas.webkitRequestFullscreen) {
-            Damoo.canvas.webkitRequestFullscreen();
-        } else {
-            console.error("Fullscreen API is not supported.");
-        }
-    };
 
     Object.defineProperty(Damoo, 'width', {
         get: function() {
@@ -66,8 +55,10 @@
     Damoo.width = window.innerWidth;
     Damoo.height = window.innerHeight;
 
+    Damoo.rows = 20;
+
     Damoo.font = {
-        size: Damoo.height / 20,
+        size: Damoo.height / Damoo.rows,
         family: "Heiti"
     };
 
@@ -75,7 +66,7 @@
     Damoo.ctx.font = Damoo.font.size + "px " + Damoo.font.family;
     Damoo.ctx.fillStyle = "#fff";
     Damoo.ctx.textAlign = "end";
-    Damoo.ctx.textBaseline = "top";
+    Damoo.ctx.textBaseline = "bottom";
 
     Damoo.clear = function() {
         Damoo.ctx.clearRect(0, 0, Damoo.width, Damoo.height);
@@ -87,7 +78,7 @@
         Damoo.thread.push({
             text: dt.text,
             color: dt.color,
-            time: new Date().getTime(),
+            speed: Math.sqrt(dt.text.length) / 1.5,
             offset: 0
         });
     };
@@ -100,10 +91,10 @@
         Damoo.clear();
         for (var i = 0; i < Damoo.thread.length; i++) {
             var x = Damoo.width - Damoo.thread[i].offset,
-                y = Damoo.thread[i].y = Damoo.thread[i].y || ((Damoo.font.size * i) % Damoo.height);
+                y = Damoo.thread[i].y = Damoo.thread[i].y || (Damoo.font.size * Math.ceil(Math.random() * Damoo.rows));
             Damoo.ctx.fillStyle = Damoo.thread[i].color;
             Damoo.ctx.fillText(Damoo.thread[i].text, x, y);
-            Damoo.thread[i].offset++;
+            Damoo.thread[i].offset += Damoo.thread[i].speed;
             if (x <= 0) {
                 _term(i);
             }
