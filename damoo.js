@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.0.2
+ * Damoo - HTML5 Danmaku Engine v1.0.3
  * https://github.com/jamesliu96/damoo
  *
  * Copyright (c) 2015 James Liu
@@ -10,33 +10,20 @@
 
     Damoo.dom = window.document;
 
-    var $ = function(id) {
-        return Damoo.dom.getElementById(id);
-    };
-
-    var _DOMcreate = function(id, elm) {
-        $(id).appendChild(elm);
-    };
-    var _DOMdestroy = function(id, elm) {
-        $(id).body.removeChild(elm);
-    };
-
     Damoo.canvas = Damoo.dom.createElement('canvas');
 
     Damoo.canvas.id = 'dm-canvas';
 
     Damoo.canvas.style.display = 'block';
-    Damoo.canvas.style.cursor = 'none';
-    Damoo.canvas.style.backgroundColor = "#000";
 
     Damoo.canvas.width = window.innerWidth;
     Damoo.canvas.height = window.innerHeight;
 
     Damoo.show = function(id) {
-        _DOMcreate(id, Damoo.canvas);
+        Damoo.dom.getElementById(id).appendChild(Damoo.canvas);
     };
-    Damoo.hide = function(id) {
-        _DOMdestroy(id, Damoo.canvas);
+    Damoo.hide = function() {
+        Damoo.canvas.parentNode.removeChild(Damoo.canvas);
     };
 
     Damoo.rows = 20;
@@ -49,14 +36,25 @@
     Damoo.ctx = Damoo.canvas.getContext('2d');
     Damoo.ctx.font = Damoo.font.size + "px " + Damoo.font.family;
     Damoo.ctx.fillStyle = "#fff";
-    Damoo.ctx.textAlign = "end";
+    Damoo.ctx.textAlign = "start";
     Damoo.ctx.textBaseline = "bottom";
 
-    var _clear = function() {
+    var _cls = function() {
         Damoo.ctx.clearRect(0, 0, Damoo.canvas.width, Damoo.canvas.height);
     };
 
     Damoo.thread = [];
+
+    var _del = function(dr) {
+        Damoo.thread.splice(dr, 1);
+    };
+
+    var _wri = function(tx, cl, x, y) {
+        Damoo.ctx.restore();
+        Damoo.ctx.save();
+        Damoo.ctx.fillStyle = cl;
+        Damoo.ctx.fillText(tx, x, y);
+    };
 
     Damoo.emit = function(dt) {
         Damoo.thread.push({
@@ -67,26 +65,19 @@
         });
     };
 
-    var _finish = function(dr) {
-        Damoo.thread.splice(dr, 1);
-    };
-
-    var _write = function(tx, cl, x, y) {
-        Damoo.ctx.restore();
-        Damoo.ctx.save();
-        Damoo.ctx.fillStyle = cl;
-        Damoo.ctx.fillText(tx, x, y);
+    Damoo.clear = function() {
+        Damoo.thread = [];
     };
 
     Damoo.start = function() {
-        _clear();
+        _cls();
         for (var i = 0; i < Damoo.thread.length; i++) {
             var x = Damoo.canvas.width - Damoo.thread[i].offset,
                 y = Damoo.thread[i].y = Damoo.thread[i].y || (Damoo.font.size * Math.ceil(Math.random() * Damoo.rows));
-            _write(Damoo.thread[i].text, Damoo.thread[i].color, x, y);
+            _wri(Damoo.thread[i].text, Damoo.thread[i].color, x, y);
             Damoo.thread[i].offset += Damoo.thread[i].speed;
-            if (x <= 0) {
-                _finish(i);
+            if (x <= - Damoo.thread[i].text.length * Damoo.font.size) {
+                _del(i);
             }
         }
         setTimeout(Damoo.start, 1);
