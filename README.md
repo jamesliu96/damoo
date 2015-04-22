@@ -31,8 +31,8 @@ var damoo = Damoo('dm-screen', 'dm-canvas', 20);
 And run it.
 
 ```javascript
-Damoo.show();
-Damoo.start();
+damoo.show();
+damoo.start();
 ```
 
 Danmaku can be emitted by calling `emit` method.
