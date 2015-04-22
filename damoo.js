@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.1.0
+ * Damoo - HTML5 Danmaku Engine v1.1.1
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -11,7 +11,7 @@
             return new Damoo(m, n, r);
         }
 
-        this.parent = Damoo.dom.getElementById(m) || Damoo.dom.body;
+        this.parent = Damoo.dom.getElementById(m);
         this.canvas = Damoo.dom.createElement('canvas');
 
         this.canvas.id = n;
@@ -36,7 +36,7 @@
         this.ctx.font = this.font.toString();
         this.ctx.fillStyle = "#fff";
         this.ctx.textAlign = "start";
-        this.ctx.textBaseline = "bottom";
+        this.ctx.textBaseline = "top";
     };
 
     Damoo.dom = window.document;
@@ -56,8 +56,8 @@
             speed: Math.sqrt(dt.text.length) / 1.5,
             width: dt.text.length * this.font.size,
             offset: {
-                x: 0,
-                y: 0
+                x: null,
+                y: null
             }
         });
     };
@@ -69,8 +69,12 @@
     Damoo.prototype.start = function() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         for (var i = 0; i < this.thread.length; i++) {
-            var x = this.canvas.width - this.thread.get(i).offset.x,
-                y = this.thread.get(i).offset.y = this.thread.get(i).offset.y || (this.font.size * Math.ceil(Math.random() * this.rows));
+            var x = this.canvas.width - this.thread.get(i).offset.x, y;
+            if (this.thread.get(i).offset.y == null) {
+                y = this.thread.get(i).offset.y = this.font.size * Math.floor(Math.random() * this.rows);
+            } else {
+                y = this.thread.get(i).offset.y;
+            }
             this.ctx.restore();
             this.ctx.save();
             this.ctx.fillStyle = this.thread.get(i).color;
