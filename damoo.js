@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.1.1
+ * Damoo - HTML5 Danmaku Engine v1.2.0
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -26,17 +26,13 @@
         this.canvas.style.top = 0;
         this.canvas.style.zIndex = 99999;
 
+        this.ctx = this.canvas.getContext('2d');
+
         this.rows = r;
 
         this.font = new Font(this.canvas.height / this.rows, "Arial");
 
         this.thread = new Thread();
-
-        this.ctx = this.canvas.getContext('2d');
-        this.ctx.font = this.font.toString();
-        this.ctx.fillStyle = "#fff";
-        this.ctx.textAlign = "start";
-        this.ctx.textBaseline = "top";
     };
 
     Damoo.dom = window.document;
@@ -50,13 +46,21 @@
     };
 
     Damoo.prototype.emit = function(dt) {
+        var canvas = Damoo.dom.createElement('canvas'),
+            ctx = canvas.getContext('2d');
+        canvas.width = this.font.size * dt.text.length;
+        canvas.height = this.font.size * 1.2;
+        ctx.font = this.font.toString();
+        ctx.fillStyle = "#fff";
+        ctx.fillStyle = dt.color;
+        ctx.textAlign = "start";
+        ctx.textBaseline = "top";
+        ctx.fillText(dt.text, 0, 0);
         this.thread.push({
-            text: dt.text,
-            color: dt.color,
+            canvas: canvas,
             speed: Math.sqrt(dt.text.length) / 1.5,
-            width: dt.text.length * this.font.size,
             offset: {
-                x: null,
+                x: this.canvas.width,
                 y: null
             }
         });
@@ -69,18 +73,15 @@
     Damoo.prototype.start = function() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         for (var i = 0; i < this.thread.length; i++) {
-            var x = this.canvas.width - this.thread.get(i).offset.x, y;
+            var x = this.thread.get(i).offset.x, y;
             if (this.thread.get(i).offset.y == null) {
                 y = this.thread.get(i).offset.y = this.font.size * Math.floor(Math.random() * this.rows);
             } else {
                 y = this.thread.get(i).offset.y;
             }
-            this.ctx.restore();
-            this.ctx.save();
-            this.ctx.fillStyle = this.thread.get(i).color;
-            this.ctx.fillText(this.thread.get(i).text, x, y);
-            this.thread.get(i).offset.x += this.thread.get(i).speed;
-            if (x <= -this.thread.get(i).width) {
+            this.ctx.drawImage(this.thread.get(i).canvas, x, y);
+            this.thread.get(i).offset.x -= this.thread.get(i).speed;
+            if (x <= -this.thread.get(i).canvas.width) {
                 this.thread.remove(i);
             }
         }
