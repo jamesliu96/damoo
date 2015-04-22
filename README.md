@@ -6,6 +6,8 @@ An HTML5 Danmaku Engine.
 Getting started
 ------
 
+[Download](https://github.com/jamesliu96/Damoo/releases) the latest release.
+
 Damoo requires a complete DOM with a suitable container to be fit in.
 
 ```html
@@ -23,14 +25,26 @@ Then, import `damoo.js` or `damoo.min.js`.
 Initiate the engine by writing this.
 
 ```javascript
-Damoo.show('dm-screen');
+var damoo = Damoo('dm-screen', 'dm-canvas', 20);
+```
+
+And run it.
+
+```javascript
+Damoo.show();
 Damoo.start();
 ```
 
 Danmaku can be emitted by calling `emit` method.
 
 ```javascript
-Damoo.emit({ text: "Damoo is awesome!", color: "#f49" });
+damoo.emit({ text: "Damoo is awesome!", color: "#f49" });
+```
+
+Clear the screen.
+
+```javascript
+damoo.clear();
 ```
 
 Enjoy! And explore more of the code! :)
