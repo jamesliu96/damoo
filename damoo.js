@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.2.0
+ * Damoo - HTML5 Danmaku Engine v1.2.1
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -37,6 +37,13 @@
 
     Damoo.dom = window.document;
 
+    var render = window.requestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        function(cb) { setTimeout(cb, 17); };
+
     Damoo.prototype.show = function() {
         this.parent.appendChild(this.canvas);
     };
@@ -50,7 +57,7 @@
             ctx = canvas.getContext('2d');
         canvas.width = this.font.size * dt.text.length;
         canvas.height = this.font.size * 1.2;
-        ctx.font = this.font.toString();
+        ctx.font = this.font.value;
         ctx.fillStyle = "#fff";
         ctx.fillStyle = dt.color;
         ctx.textAlign = "start";
@@ -58,7 +65,7 @@
         ctx.fillText(dt.text, 0, 0);
         this.thread.push({
             canvas: canvas,
-            speed: Math.sqrt(dt.text.length) / 1.5,
+            speed: Math.sqrt(dt.text.length) * 1.2,
             offset: {
                 x: this.canvas.width,
                 y: null
@@ -73,7 +80,7 @@
     Damoo.prototype.start = function() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         for (var i = 0; i < this.thread.length; i++) {
-            var x = this.thread.get(i).offset.x, y;
+            var x = (this.thread.get(i).offset.x + 0.5) | 0, y;
             if (this.thread.get(i).offset.y == null) {
                 y = this.thread.get(i).offset.y = this.font.size * Math.floor(Math.random() * this.rows);
             } else {
@@ -85,11 +92,11 @@
                 this.thread.remove(i);
             }
         }
-        setTimeout(function(self) {
+        render(function(self) {
             return function() {
                 self.start();
             };
-        }(this), 1);
+        }(this));
     };
 
     var Font = function(s, f) {
@@ -97,9 +104,11 @@
         this.family = f;
     };
 
-    Font.prototype.toString = function() {
-        return this.size + "px " + this.family;
-    };
+    Object.defineProperty(Font.prototype, 'value', {
+        get: function() {
+            return this.size + "px " + this.family;
+        }
+    });
 
     var Thread = function() {
         this.memory = [];
