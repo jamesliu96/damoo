@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>Damoo</title>
+    <meta name="author" content="James Liu">
+    <meta name="description" content="Damoo by James Liu">
+    <meta name="keywords" content="damoo,danmu,danmaku">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=0">
+    <style type="text/css">
+    html, body, #dm-main {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font: 22px Menlo, monospace;
+    }
+    html {
+        background: transparent;
+    }
+    body {
+        background-color: #000;
+    }
+    a, a:visited, a:active {
+        color: #888;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #aaa;
+        text-decoration: underline;
+    }
+    #dm-main {
+        background-image: url(bg.png);
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-attachment: fixed;
+    }
+    #dm-screen {
+        color: #888;
+    }
+    #dm-info {
+        padding: 10px;
+        border-radius: 3px;
+        display: block;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: 100000;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    </style>
+</head>
+<body>
+    <div id="dm-main">
+        <div id="dm-screen"><div id="dm-info">Damoo by James Liu (<a href="https://github.com/jamesliu96/Damoo">source code</a>)<br>Press Space to send a message<br>Press / to clear the screen<br>Press Shift + , to lower the opacity<br>Press Shift + . to raise the opacity</div></div>
+    </div>
+<script type="text/javascript" src="damoo.min.js"></script>
+<script type="text/javascript">
+<!--
+var scrn = document.getElementById('dm-screen');
+scrn.style.width = window.innerWidth + "px";
+scrn.style.height = window.innerHeight + "px";
+scrn.style.opacity = 1;
+
+var damoo = Damoo('dm-screen', 'dm-canvas', 20);
+
+damoo.show();
+damoo.start();
+
+var addEvent = function(obj, nm, cb) {
+    if (window.addEventListener) {
+        obj.addEventListener(nm, cb, false);
+    } else if (window.attachEvent) {
+        obj.attachEvent("on" + nm, cb);
+    }
+};
+
+damoo.emit({ text: "Welcome to Damoo", color: "#" + Math.random().toString(16).substring(2).substring(0, 6) });
+
+addEvent(document.body, "keypress", function(e) {
+    var keyCode = e.keyCode || e.which;
+    switch (keyCode) {
+        case 32:
+            var text = prompt("Text to be send...");
+            var color = prompt("Choose a color... (leave this blank to random choose a color)");
+            damoo.emit({ text: text, color: "#" + (color || Math.random().toString(16).substring(2).substring(0, 6)) });
+            break;
+        case 47:
+            damoo.clear();
+            break;
+        case 60:
+            if (scrn.style.opacity > 0) {
+                scrn.style.opacity = Number(scrn.style.opacity) - 0.1;
+            }
+            break;
+        case 62:
+            if (scrn.style.opacity < 1) {
+                scrn.style.opacity = Number(scrn.style.opacity) + 0.1;
+            }
+            break;
+    }
+    return false;
+});
+-->
+</script>
+</body>
+</html>
