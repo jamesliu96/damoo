@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.2.1
+ * Damoo - HTML5 Danmaku Engine v1.2.2
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -65,7 +65,7 @@
         ctx.fillText(dt.text, 0, 0);
         this.thread.push({
             canvas: canvas,
-            speed: Math.sqrt(dt.text.length) * 1.2,
+            speed: Math.log(canvas.width),
             offset: {
                 x: this.canvas.width,
                 y: null
