@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.2.2
+ * Damoo - HTML5 Danmaku Engine v1.2.3
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -12,6 +12,8 @@
         }
 
         this.parent = Damoo.dom.getElementById(m);
+        this.parent.style.position = "relative";
+
         this.canvas = Damoo.dom.createElement('canvas');
 
         this.canvas.id = n;
@@ -21,7 +23,7 @@
 
         this.canvas.style.display = 'block';
         this.canvas.style.backgroundColor = 'transparent';
-        this.canvas.style.position = 'relative';
+        this.canvas.style.position = 'absolute';
         this.canvas.style.left = 0;
         this.canvas.style.top = 0;
         this.canvas.style.zIndex = 99999;
