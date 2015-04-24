@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.2.3
+ * Damoo - HTML5 Danmaku Engine v1.2.4
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -32,14 +32,36 @@
 
         this.rows = r;
 
+        if (this.canvas.height / this.rows < 12) {
+            this.rows = this.canvas.height / 12;
+        }
+
         this.font = new Font(this.canvas.height / this.rows, "Arial");
 
         this.thread = new Thread();
     };
 
+    Damoo.version = "v1.2.4";
+
     Damoo.dom = window.document;
 
-    var render = window.requestAnimationFrame ||
+    Damoo.utils = {};
+
+    Damoo.utils.preload = function(d, f) {
+        var cvs = Damoo.dom.createElement('canvas'),
+            ctx = cvs.getContext('2d');
+        cvs.width = f.size * d.text.length;
+        cvs.height = f.size * 1.2;
+        ctx.font = f.value;
+        ctx.fillStyle = "#fff";
+        ctx.fillStyle = d.color;
+        ctx.textAlign = "start";
+        ctx.textBaseline = "top";
+        ctx.fillText(d.text, 0, 0);
+        return cvs;
+    };
+
+    var RAF = window.requestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
         window.msRequestAnimationFrame ||
@@ -54,20 +76,11 @@
         this.parent.removeChild(this.canvas);
     };
 
-    Damoo.prototype.emit = function(dt) {
-        var canvas = Damoo.dom.createElement('canvas'),
-            ctx = canvas.getContext('2d');
-        canvas.width = this.font.size * dt.text.length;
-        canvas.height = this.font.size * 1.2;
-        ctx.font = this.font.value;
-        ctx.fillStyle = "#fff";
-        ctx.fillStyle = dt.color;
-        ctx.textAlign = "start";
-        ctx.textBaseline = "top";
-        ctx.fillText(dt.text, 0, 0);
+    Damoo.prototype.emit = function(d) {
+        var cvs = Damoo.utils.preload(d, this.font);
         this.thread.push({
-            canvas: canvas,
-            speed: Math.log(canvas.width),
+            canvas: cvs,
+            speed: Math.log(cvs.width),
             offset: {
                 x: this.canvas.width,
                 y: null
@@ -94,7 +107,7 @@
                 this.thread.remove(i);
             }
         }
-        render(function(self) {
+        RAF(function(self) {
             return function() {
                 self.start();
             };
