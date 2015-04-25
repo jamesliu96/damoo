@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.3.0
+ * Damoo - HTML5 Danmaku Engine v1.3.1
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -14,13 +14,11 @@
         this.thread = new Thread();
     };
 
-    Damoo.version = "v1.3.0";
+    Damoo.version = "v1.3.1";
 
     Damoo.dom = window.document;
 
-    Damoo.utils = {};
-
-    Damoo.utils.preload = function(d, f) {
+    var _preload = function(d, f) {
         var cvs = Damoo.dom.createElement('canvas'),
             ctx = cvs.getContext('2d');
         cvs.width = f.size * d.text.length * 1.2;
@@ -34,19 +32,19 @@
         return cvs;
     };
 
-    Damoo.utils.random = function(r) {
+    var _random = function(r) {
         return Math.random() * r;
     };
 
-    Damoo.utils.round = function(d) {
+    var _round = function(d) {
         return d + 0.5 | 0;
     };
 
-    Damoo.utils.floor = function(d) {
+    var _floor = function(d) {
         return d | 0;
     };
 
-    var RAF = window.requestAnimationFrame ||
+    var _RAF = window.requestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
         window.msRequestAnimationFrame ||
@@ -62,13 +60,13 @@
     };
 
     Damoo.prototype.emit = function(d) {
-        var cvs = Damoo.utils.preload(d, this.canvas.font);
+        var cvs = _preload(d, this.canvas.font);
         this.thread.push({
             canvas: cvs,
             speed: Math.log(cvs.width),
             offset: {
                 x: this.canvas.width,
-                y: this.canvas.font.size * Damoo.utils.floor(Damoo.utils.random(this.canvas.rows))
+                y: this.canvas.font.size * _floor(_random(this.canvas.rows))
             }
         });
     };
@@ -88,7 +86,7 @@
                 this.thread.remove(i);
             }
         }
-        RAF(function(self) {
+        _RAF(function(self) {
             return function() {
                 self.start();
             };
@@ -125,7 +123,7 @@
     };
 
     Canvas.prototype.draw = function(t, x, y) {
-        this.context.drawImage(t.canvas, Damoo.utils.round(x), Damoo.utils.round(y));
+        this.context.drawImage(t.canvas, _round(x), _round(y));
     };
 
     var Font = function(s, f) {
