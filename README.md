@@ -1,4 +1,4 @@
-Damoo
+Damoo [![Gitter chat](https://badges.gitter.im/jamesliu96/Damoo.svg)](https://gitter.im/jamesliu96/Damoo)
 ======
 
 An HTML5 Danmaku Engine.
