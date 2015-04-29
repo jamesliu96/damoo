@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.3.2
+ * Damoo - HTML5 Danmaku Engine v2.0.0alpha
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -14,7 +14,7 @@
         this.thread = new Thread();
     };
 
-    Damoo.version = "v1.3.2";
+    Damoo.version = "v2.0.0alpha";
 
     Damoo.dom = window.document;
 
@@ -32,6 +32,10 @@
         return cvs;
     };
 
+    var _random = function(r) {
+        return Math.random() * r;
+    };
+
     var _round = function(d) {
         return d + 0.5 | 0;
     };
@@ -40,7 +44,7 @@
         return d | 0;
     };
 
-    var _RAF = window.requestAnimationFrame ||
+    var RAF = window.requestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
         window.msRequestAnimationFrame ||
@@ -48,16 +52,21 @@
         function(cb) { setTimeout(cb, 17); };
 
     Damoo.prototype.show = function() {
-        this.canvas.parent.appendChild(this.canvas.layer);
+        for (var i = 0; i < this.canvas.layers.length; i++) {
+            this.canvas.parent.appendChild(this.canvas.layers[i]);
+        }
     };
 
     Damoo.prototype.hide = function() {
-        this.canvas.parent.removeChild(this.canvas.layer);
+        for (var i = 0; i < this.canvas.layers.length; i++) {
+            this.canvas.parent.removeChild(this.canvas.layers[i]);
+        }
     };
 
     Damoo.prototype.emit = function(d) {
         var cvs = _preload(d, this.canvas.font);
         this.thread.push({
+            fixed: d.fixed,
             canvas: cvs,
             speed: Math.pow(cvs.width, 1 / 3) * 0.6,
             offset: {
@@ -82,7 +91,7 @@
                 this.thread.remove(i);
             }
         }
-        _RAF(function(self) {
+        RAF(function(self) {
             return function() {
                 self.start();
             };
@@ -100,26 +109,39 @@
         this.width = this.parent.offsetWidth;
         this.height = this.parent.offsetHeight;
         this.font = new Font(this.height / this.rows, "sans-serif");
-        this.layer = Damoo.dom.createElement('canvas');
-        this.context = this.layer.getContext('2d');
-        this.layer.className = this.name;
-        this.layer.id = Math.random().toString(16).substr(2).substr(0, 6);
-        this.layer.width = this.width;
-        this.layer.height = this.height;
-        this.layer.style.display = 'block';
-        this.layer.style.backgroundColor = 'transparent';
-        this.layer.style.position = 'absolute';
-        this.layer.style.left = 0;
-        this.layer.style.top = 0;
-        this.layer.style.zIndex = 99999;
+        this.layers = [
+            Damoo.dom.createElement('canvas'),
+            Damoo.dom.createElement('canvas')
+        ];
+        this.contexts = [
+            this.layers[0].getContext('2d'),
+            this.layers[1].getContext('2d')
+        ];
+        this.layers[0].className = this.layers[1].className = this.name;
+        this.layers[0].id = Math.random().toString(16).substr(2).substr(0, 6);
+        this.layers[1].id = Math.random().toString(16).substr(2).substr(0, 6);
+        this.layers[0].width = this.layers[1].width = this.width;
+        this.layers[0].height = this.layers[1].height = this.height;
+        this.layers[0].style.display = this.layers[1].style.display = 'block';
+        this.layers[0].style.backgroundColor = this.layers[1].style.backgroundColor = 'transparent';
+        this.layers[0].style.position = this.layers[1].style.position = 'absolute';
+        this.layers[0].style.left = this.layers[1].style.left = 0;
+        this.layers[0].style.top = this.layers[1].style.top = 0;
+        this.layers[0].style.zIndex = 99998;
+        this.layers[1].style.zIndex = 99999;
     };
 
     Canvas.prototype.clear = function() {
-        this.context.clearRect(0, 0, this.width, this.height);
+        this.contexts[0].clearRect(0, 0, this.width, this.height);
+        this.contexts[1].clearRect(0, 0, this.width, this.height);
     };
 
     Canvas.prototype.draw = function(t, x, y) {
-        this.context.drawImage(t.canvas, _round(x), _round(y));
+        if (t.fixed) {
+            this.contexts[1].drawImage(t.canvas, (this.width - t.canvas.width) / 2, _round(y));
+        } else {
+            this.contexts[0].drawImage(t.canvas, _round(x), _round(y));
+        }
     };
 
     var Font = function(s, f) {
