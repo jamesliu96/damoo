@@ -22,6 +22,8 @@ Then, import `damoo.js` or `damoo.min.js`.
 <script type="text/javascript" src="damoo.min.js"></script>
 ```
 
+**IMPORTANT: the __WORKER__ should also be in the same directory with the main script.**
+
 Initiate the engine by writing this.
 
 ```javascript
@@ -39,6 +41,12 @@ Danmaku can be emitted by calling `emit` method.
 
 ```javascript
 damoo.emit({ text: "Damoo is awesome!", color: "#f49" });
+```
+
+They can be fixed at the center of the screen.
+
+```javascript
+damoo.emit({ text: "FIXED!", color: "#6f9", fixed: true });
 ```
 
 Clear the screen.
