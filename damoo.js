@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.3.2
+ * Damoo - HTML5 Danmaku Engine v1.3.3
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -14,7 +14,7 @@
         this.thread = new Thread();
     };
 
-    Damoo.version = "v1.3.2";
+    Damoo.version = "v1.3.3";
 
     Damoo.dom = window.document;
 
@@ -30,14 +30,6 @@
         ctx.textBaseline = "top";
         ctx.fillText(d.text, 0, 0);
         return cvs;
-    };
-
-    var _round = function(d) {
-        return d + 0.5 | 0;
-    };
-
-    var _floor = function(d) {
-        return d | 0;
     };
 
     var _RAF = window.requestAnimationFrame ||
@@ -62,7 +54,7 @@
             speed: Math.pow(cvs.width, 1 / 3) * 0.6,
             offset: {
                 x: this.canvas.width,
-                y: this.canvas.font.size * _floor(Math.random() * this.canvas.rows)
+                y: this.canvas.font.size * (Math.random() * this.canvas.rows | 0)
             }
         });
     };
@@ -119,7 +111,7 @@
     };
 
     Canvas.prototype.draw = function(t, x, y) {
-        this.context.drawImage(t.canvas, _round(x), _round(y));
+        this.context.drawImage(t.canvas, x + 0.5 | 0, y + 0.5 | 0);
     };
 
     var Font = function(s, f) {
