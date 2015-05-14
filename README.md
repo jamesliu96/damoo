@@ -16,13 +16,13 @@ Damoo requires a complete DOM with a suitable container to be fit in.
 </div>
 ```
 
-Then, import `damoo.js` or `damoo.min.js`.
+Then, import `damoo.js`.
 
 ```html
-<script type="text/javascript" src="damoo.min.js"></script>
+<script type="text/javascript" src="damoo.js"></script>
 ```
 
-**IMPORTANT: the __WORKER__ should also be in the same directory with the main script.**
+**IMPORTANT: `damoo-worker.js` should also be in the same directory with the main script.**
 
 Initiate the engine by writing this.
 

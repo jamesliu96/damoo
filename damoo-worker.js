@@ -7,7 +7,6 @@
  */
 onmessage = function(e) {
     postMessage({
-        speed: Math.pow(e.data.w, 1 / 3) * 0.6,
-        oy: e.data.fs * (Math.random() * e.data.cr | 0)
+        speed: Math.pow(e.data.w, 1 / 3) * 0.6
     });
 };

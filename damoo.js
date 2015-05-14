@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v2.0.0
+ * Damoo - HTML5 Danmaku Engine v2.1.0
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -11,11 +11,11 @@
             return new Damoo(m, n, r);
         }
         this.canvas = new Canvas(m, n, r);
-        this.thread = new Thread();
+        this.thread = new Thread(r);
         this.worker = new Worker(Damoo.path + 'damoo-worker.js');
     };
 
-    Damoo.version = "v2.0.0";
+    Damoo.version = "v2.1.0";
 
     Damoo.dom = window.document;
 
@@ -71,17 +71,16 @@
             self.thread.push({
                 fixed: d.fixed,
                 canvas: cvs,
+                index: self.thread.index,
                 speed: e.data.speed,
                 offset: {
                     x: self.canvas.width,
-                    y: e.data.oy
+                    y: self.canvas.font.size * self.thread.index
                 }
             });
         };
         this.worker.postMessage({
-            w: cvs.width,
-            fs: this.canvas.font.size,
-            cr: this.canvas.rows
+            w: cvs.width
         });
     };
 
@@ -92,11 +91,12 @@
     Damoo.prototype.start = function() {
         this.canvas.clear();
         for (var i = 0; i < this.thread.length; i++) {
-            var x = this.thread.get(i).offset.x,
-                y = this.thread.get(i).offset.y;
-            this.canvas.draw(this.thread.get(i), x, y);
-            this.thread.get(i).offset.x -= this.thread.get(i).speed;
-            if (x <= -this.thread.get(i).canvas.width) {
+            var d = this.thread.get(i),
+                x = d.offset.x,
+                y = d.offset.y;
+            this.canvas.draw(d, x, y);
+            d.offset.x -= d.speed;
+            if (x <= -d.canvas.width) {
                 this.thread.remove(i);
             }
         }
@@ -164,11 +164,17 @@
         }
     });
 
-    var Thread = function() {
+    var Thread = function(r) {
+        this.index = 0;
+        this.rows = r;
         this.pool = [];
     };
 
     Thread.prototype.push = function(d) {
+        this.index++;
+        if (this.index >= this.rows) {
+            this.index = 0;
+        }
         this.pool.push(d);
     };
 
@@ -177,10 +183,15 @@
     };
 
     Thread.prototype.remove = function(d) {
+        var i = this.get(d).index;
+        if (this.index > i) {
+            this.index = i;
+        }
         this.pool.splice(d, 1);
     };
 
     Thread.prototype.empty = function() {
+        this.index = 0;
         this.pool = [];
     };
 
