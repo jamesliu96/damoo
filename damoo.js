@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.3.3
+ * Damoo - HTML5 Danmaku Engine v1.4.0
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -11,10 +11,10 @@
             return new Damoo(m, n, r);
         }
         this.canvas = new Canvas(m, n, r);
-        this.thread = new Thread();
+        this.thread = new Thread(r);
     };
 
-    Damoo.version = "v1.3.3";
+    Damoo.version = "v1.4.0";
 
     Damoo.dom = window.document;
 
@@ -51,10 +51,11 @@
         var cvs = _preload(d, this.canvas.font);
         this.thread.push({
             canvas: cvs,
+            index: this.thread.index,
             speed: Math.pow(cvs.width, 1 / 3) * 0.6,
             offset: {
                 x: this.canvas.width,
-                y: this.canvas.font.size * (Math.random() * this.canvas.rows | 0)
+                y: this.canvas.font.size * this.thread.index
             }
         });
     };
@@ -66,11 +67,12 @@
     Damoo.prototype.start = function() {
         this.canvas.clear();
         for (var i = 0; i < this.thread.length; i++) {
-            var x = this.thread.get(i).offset.x,
-                y = this.thread.get(i).offset.y;
-            this.canvas.draw(this.thread.get(i), x, y);
-            this.thread.get(i).offset.x -= this.thread.get(i).speed;
-            if (x <= -this.thread.get(i).canvas.width) {
+            var d = this.thread.get(i),
+                x = d.offset.x,
+                y = d.offset.y;
+            this.canvas.draw(d, x, y);
+            d.offset.x -= d.speed;
+            if (x <= -d.canvas.width) {
                 this.thread.remove(i);
             }
         }
@@ -84,7 +86,7 @@
     var Canvas = function(m, n, r) {
         this.parent = Damoo.dom.getElementById(m);
         this.parent.style.position = "relative";
-        this.name = n;
+        this.id = n;
         this.rows = r;
         if (this.height / this.rows < 12) {
             this.rows = this.height / 12;
@@ -94,8 +96,7 @@
         this.font = new Font(this.height / this.rows, "sans-serif");
         this.layer = Damoo.dom.createElement('canvas');
         this.context = this.layer.getContext('2d');
-        this.layer.className = this.name;
-        this.layer.id = Math.random().toString(16).substr(2).substr(0, 6);
+        this.layer.id = this.id;
         this.layer.width = this.width;
         this.layer.height = this.height;
         this.layer.style.display = 'block';
@@ -125,11 +126,17 @@
         }
     });
 
-    var Thread = function() {
+    var Thread = function(r) {
+        this.index = 0;
+        this.rows = r;
         this.pool = [];
     };
 
     Thread.prototype.push = function(d) {
+        this.index++;
+        if (this.index >= this.rows) {
+            this.index = 0;
+        }
         this.pool.push(d);
     };
 
@@ -138,10 +145,15 @@
     };
 
     Thread.prototype.remove = function(d) {
+        var i = this.get(d).index;
+        if (this.index > i) {
+            this.index = i;
+        }
         this.pool.splice(d, 1);
     };
 
     Thread.prototype.empty = function() {
+        this.index = 0;
         this.pool = [];
     };
 
