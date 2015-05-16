@@ -1,20 +1,20 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v1.4.0
+ * Damoo - HTML5 Danmaku Engine v1.4.1
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
  * Released under the MIT license
  */
 ;(function(window) {
-    var Damoo = function(m, n, r) {
+    var Damoo = function(m, n, r, t) {
         if (!(this instanceof Damoo)) {
-            return new Damoo(m, n, r);
+            return new Damoo(m, n, r, t);
         }
-        this.canvas = new Canvas(m, n, r);
+        this.canvas = new Canvas(m, n, r, t);
         this.thread = new Thread(r);
     };
 
-    Damoo.version = "v1.4.0";
+    Damoo.version = "v1.4.1";
 
     Damoo.dom = window.document;
 
@@ -24,10 +24,14 @@
         cvs.width = f.size * d.text.length * 1.2;
         cvs.height = f.size * 1.2;
         ctx.font = f.value;
-        ctx.fillStyle = "#fff";
-        ctx.fillStyle = d.color;
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
+        ctx.fillStyle = "#fff";
+        if (d.shadow) {
+            ctx.fillStyle = d.shadow.color;
+            ctx.fillText(d.text, 1, 1);
+        }
+        ctx.fillStyle = d.color;
         ctx.fillText(d.text, 0, 0);
         return cvs;
     };
@@ -83,7 +87,7 @@
         }(this));
     };
 
-    var Canvas = function(m, n, r) {
+    var Canvas = function(m, n, r, t) {
         this.parent = Damoo.dom.getElementById(m);
         this.parent.style.position = "relative";
         this.id = n;
@@ -93,15 +97,15 @@
         }
         this.width = this.parent.offsetWidth;
         this.height = this.parent.offsetHeight;
-        this.font = new Font(this.height / this.rows, "sans-serif");
+        this.font = new Font(this.height / this.rows, t || "sans-serif");
         this.layer = Damoo.dom.createElement('canvas');
         this.context = this.layer.getContext('2d');
         this.layer.id = this.id;
         this.layer.width = this.width;
         this.layer.height = this.height;
-        this.layer.style.display = 'block';
-        this.layer.style.backgroundColor = 'transparent';
-        this.layer.style.position = 'absolute';
+        this.layer.style.display = "block";
+        this.layer.style.backgroundColor = "transparent";
+        this.layer.style.position = "absolute";
         this.layer.style.left = 0;
         this.layer.style.top = 0;
         this.layer.style.zIndex = 99999;
