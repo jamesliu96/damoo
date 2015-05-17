@@ -26,11 +26,12 @@
         ctx.font = f.value;
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
-        ctx.fillStyle = "#fff";
         if (d.shadow) {
+            ctx.fillStyle = "#fff";
             ctx.fillStyle = d.shadow.color;
             ctx.fillText(d.text, 1, 1);
         }
+        ctx.fillStyle = "#fff";
         ctx.fillStyle = d.color;
         ctx.fillText(d.text, 0, 0);
         return cvs;
