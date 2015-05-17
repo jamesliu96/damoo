@@ -66,7 +66,7 @@ scrn.style.opacity = 1;
 
 document.getElementById('dm-version').innerHTML = Damoo.version;
 
-var damoo = Damoo('dm-screen', 'dm-canvas', 20);
+var damoo = Damoo('dm-screen', 'dm-canvas', 20, "Arial");
 
 damoo.show();
 damoo.start();
@@ -85,9 +85,16 @@ addEvent(document.body, "keypress", function(e) {
     var keyCode = e.keyCode || e.which;
     switch (keyCode) {
         case 32:
-            var text = prompt("Text to be send...");
-            var color = prompt("Choose a color... (leave this blank to random choose a color)");
-            damoo.emit({ text: text, color: "#" + (color || Math.random().toString(16).substring(2).substring(0, 6)) });
+            var text = prompt("Text?");
+            if (!text) return;
+            var color = prompt("Text color? (#fff)");
+            var fixed = prompt("Fixed? (y/n)");
+            fixed = (fixed == "y" || fixed == "Y");
+            var shadow = prompt("Shadow? (y/n)");
+            if (shadow == "y" || shadow == "Y") {
+                shadow = { color: prompt("Shadow color? (#fff)") };
+            }
+            damoo.emit({ text: text, color: color, fixed: fixed, shadow: shadow });
             break;
         case 47:
             damoo.clear();
