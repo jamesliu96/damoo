@@ -119,7 +119,7 @@
 
     Canvas.prototype.draw = function(t, x, y) {
         if (t.fixed) {
-            this.context.drawImage(t.canvas, (this.width - t.canvas.width) / 2, y + 0.5 | 0);
+            this.context.drawImage(t.canvas, (this.width - t.canvas.width) / 2 + 0.5 | 0, y + 0.5 | 0);
         } else {
             this.context.drawImage(t.canvas, x + 0.5 | 0, y + 0.5 | 0);
         }
