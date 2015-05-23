@@ -54,7 +54,7 @@
 </head>
 <body>
     <div id="dm-main">
-        <div id="dm-screen"><div id="dm-info">Damoo <span id="dm-version"></span> by James Liu (<a href="https://github.com/jamesliu96/Damoo">source code</a>)<br>Press Space to send a message<br>Press / to clear the screen<br>Press Shift + , to decrease the opacity<br>Press Shift + . to increase the opacity</div></div>
+        <div id="dm-screen"><div id="dm-info">Damoo <span id="dm-version"></span> by James Liu (<a href="https://github.com/jamesliu96/Damoo">source code</a>)<br>Press Enter to send a message<br>Press Space to suspend/resume<br>Press / to clear the screen<br>Press Shift + , to decrease the opacity<br>Press Shift + . to increase the opacity</div></div>
     </div>
 <script type="text/javascript" src="damoo.min.js"></script>
 <script type="text/javascript">
@@ -84,7 +84,7 @@ damoo.emit({ text: "Welcome to Damoo", color: "#" + Math.random().toString(16).s
 addEvent(document.body, "keypress", function(e) {
     var keyCode = e.keyCode || e.which;
     switch (keyCode) {
-        case 32:
+        case 13:
             var text = prompt("Text?");
             if (!text) return;
             var color = prompt("Text color? (#fff)");
@@ -107,6 +107,13 @@ addEvent(document.body, "keypress", function(e) {
         case 62:
             if (scrn.style.opacity < 1) {
                 scrn.style.opacity = Number(scrn.style.opacity) + 0.1;
+            }
+            break;
+        case 32:
+            if (damoo.state) {
+                damoo.suspend();
+            } else {
+                damoo.resume();
             }
             break;
     }

@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v2.1.2
+ * Damoo - HTML5 Danmaku Engine v2.1.3
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -12,9 +12,11 @@
         }
         this.canvas = new Canvas(m, n, r, t);
         this.thread = new Thread(r);
+        this.afid = null;
+        this.state = null;
     };
 
-    Damoo.version = "v2.1.2";
+    Damoo.version = "v2.1.3";
 
     Damoo.dom = window.document;
 
@@ -44,6 +46,14 @@
         window.oRequestAnimationFrame ||
         function(cb) { setTimeout(cb, 17); };
 
+    var _CAF = window.cancelAnimationFrame ||
+        window.mozCancelAnimationFrame ||
+        window.webkitCancelAnimationFrame ||
+        window.webkitCancelRequestAnimationFrame ||
+        window.msCancelAnimationFrame ||
+        window.oCancelAnimationFrame ||
+        function(id) { clearTimeout(id); };
+
     Damoo.prototype.show = function() {
         this.canvas.parent.appendChild(this.canvas.layer);
     };
@@ -70,7 +80,7 @@
         this.thread.empty();
     };
 
-    Damoo.prototype.start = function() {
+    var _render = function() {
         this.canvas.clear();
         for (var i = 0; i < this.thread.length; i++) {
             var d = this.thread.get(i),
@@ -82,11 +92,27 @@
                 this.thread.remove(i);
             }
         }
-        _RAF(function(self) {
+        this.afid = _RAF(function(self) {
             return function() {
-                self.start();
+                _render.call(self);
             };
         }(this));
+    };
+
+    Damoo.prototype.start = function() {
+        if (!this.state) {
+            _render.call(this);
+            this.state = 1;
+        }
+    };
+
+    Damoo.prototype.suspend = function() {
+        _CAF(this.afid);
+        this.state = 0;
+    };
+
+    Damoo.prototype.resume = function() {
+        this.start();
     };
 
     var Canvas = function(m, n, r, t) {
