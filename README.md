@@ -71,6 +71,18 @@ Clear the screen.
 damoo.clear();
 ```
 
+If needed, you may suspend the animation.
+
+```javascript
+damoo.suspend();
+```
+
+And resume it when ready to go.
+
+```javascript
+damoo.resume();
+```
+
 Enjoy! And explore more of the code! :)
 
 Contributing
