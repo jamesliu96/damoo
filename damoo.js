@@ -58,7 +58,7 @@
         window.webkitRequestAnimationFrame ||
         window.msRequestAnimationFrame ||
         window.oRequestAnimationFrame ||
-        function(cb) { setTimeout(cb, 17); };
+        function(cb) { return setTimeout(cb, 17); };
 
     var _CAF = window.cancelAnimationFrame ||
         window.mozCancelAnimationFrame ||
