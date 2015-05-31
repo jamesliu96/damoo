@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v2.1.5
+ * Damoo - HTML5 Danmaku Engine v2.1.6
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -14,9 +14,24 @@
         this.thread = new Thread(r);
     };
 
-    Damoo.version = "v2.1.5";
+    Damoo.version = "v2.1.6";
 
     Damoo.dom = window.document;
+
+    var _crop = function(c, x) {
+        var g = x.getImageData(0, 0, c.width, c.height);
+        for (var i = c.height - 1, j, w = 0, d = g.data; i >= 0; i--) {
+            for (j = c.width - 1; j >= 0; j--) {
+                if (d[(i * c.width + j) * 4 + 3] != 0) {
+                    if (j > w) {
+                        w = j + 1;
+                    }
+                }
+            }
+        }
+        c.width = w;
+        x.putImageData(g, 0, 0);
+    };
 
     var _preload = function(d, f) {
         var cvs = Damoo.dom.createElement('canvas'),
@@ -27,26 +42,16 @@
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
         if (d.shadow) {
-            ctx.fillStyle = "#fff";
-            ctx.fillStyle = d.shadow.color;
-            ctx.fillText(d.text, 1, 1);
+            ctx.shadowOffsetX = 1;
+            ctx.shadowOffsetY = 1;
+            ctx.shadowColor = "#fff";
+            ctx.shadowColor = d.shadow.color;
         }
         ctx.fillStyle = "#fff";
         ctx.fillStyle = d.color;
         ctx.fillText(d.text, 0, 0);
         if (d.fixed) {
-            var g = ctx.getImageData(0, 0, cvs.width, cvs.height);
-            for (var i = cvs.height - 1, j, w = 0, d = g.data; i >= 0; i--) {
-                for (j = cvs.width - 1; j >= 0; j--) {
-                    if (d[(i * cvs.width + j) * 4 + 3] != 0) {
-                        if (j > w) {
-                            w = j + 1;
-                        }
-                    }
-                }
-            }
-            cvs.width = w;
-            ctx.putImageData(g, 0, 0);
+            _crop(cvs, ctx);
         }
         return cvs;
     };
@@ -118,6 +123,9 @@
     };
 
     Damoo.prototype.start = function() {
+        if (this.state === void 0) {
+            this.clear().show();
+        }
         if (!this.state) {
             _render.call(this);
             this.state = 1;
@@ -126,15 +134,15 @@
     };
 
     Damoo.prototype.suspend = function() {
+        if (this.state === void 0) {
+            return this;
+        }
         _CAF(_afid);
         this.state = 0;
         return this;
     };
 
     Damoo.prototype.resume = function() {
-        if (this.state === void 0) {
-            return this;
-        }
         return this.start();
     };
 
@@ -143,11 +151,11 @@
         this.parent.style.position = "relative";
         this.id = n;
         this.rows = r;
+        this.width = this.parent.offsetWidth;
+        this.height = this.parent.offsetHeight;
         if (this.height / this.rows < 12) {
             this.rows = this.height / 12;
         }
-        this.width = this.parent.offsetWidth;
-        this.height = this.parent.offsetHeight;
         this.font = new Font(this.height / this.rows, t || "sans-serif");
         this.layer = Damoo.dom.createElement('canvas');
         this.context = this.layer.getContext('2d');
