@@ -22,7 +22,7 @@ Then, import `damoo.js` or `damoo.min.js`.
 <script type="text/javascript" src="damoo.min.js"></script>
 ```
 
-Initiate the engine by writing this.
+Initiate Damoo.
 
 ```javascript
 var damoo = Damoo('dm-screen', 'dm-canvas', 20);
@@ -37,8 +37,7 @@ var damoo = Damoo('dm-screen', 'dm-canvas', 20, "Arial");
 And run it.
 
 ```javascript
-damoo.show();
-damoo.start();
+damoo.show().start();
 ```
 
 Danmaku can be emitted by calling `emit` method.
@@ -69,6 +68,12 @@ Clear the screen.
 
 ```javascript
 damoo.clear();
+```
+
+You may hide Damoo when necessary.
+
+```javascript
+damoo.hide();
 ```
 
 If needed, you may suspend the animation.

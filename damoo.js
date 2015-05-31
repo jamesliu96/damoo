@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v2.1.4
+ * Damoo - HTML5 Danmaku Engine v2.1.5
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -12,11 +12,9 @@
         }
         this.canvas = new Canvas(m, n, r, t);
         this.thread = new Thread(r);
-        this.afid = null;
-        this.state = null;
     };
 
-    Damoo.version = "v2.1.4";
+    Damoo.version = "v2.1.5";
 
     Damoo.dom = window.document;
 
@@ -70,10 +68,12 @@
 
     Damoo.prototype.show = function() {
         this.canvas.parent.appendChild(this.canvas.layer);
+        return this;
     };
 
     Damoo.prototype.hide = function() {
         this.canvas.parent.removeChild(this.canvas.layer);
+        return this;
     };
 
     Damoo.prototype.emit = function(d) {
@@ -88,11 +88,15 @@
                 y: this.canvas.font.size * this.thread.index
             }
         });
+        return this;
     };
 
     Damoo.prototype.clear = function() {
         this.thread.empty();
+        return this;
     };
+
+    var _afid;
 
     var _render = function() {
         this.canvas.clear();
@@ -106,7 +110,7 @@
                 this.thread.remove(i);
             }
         }
-        this.afid = _RAF(function(self) {
+        _afid = _RAF(function(self) {
             return function() {
                 _render.call(self);
             };
@@ -118,15 +122,20 @@
             _render.call(this);
             this.state = 1;
         }
+        return this;
     };
 
     Damoo.prototype.suspend = function() {
-        _CAF(this.afid);
+        _CAF(_afid);
         this.state = 0;
+        return this;
     };
 
     Damoo.prototype.resume = function() {
-        this.start();
+        if (this.state === void 0) {
+            return this;
+        }
+        return this.start();
     };
 
     var Canvas = function(m, n, r, t) {
