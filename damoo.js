@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v2.1.4
+ * Damoo - HTML5 Danmaku Engine v2.1.6
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -12,13 +12,26 @@
         }
         this.canvas = new Canvas(m, n, r, t);
         this.thread = new Thread(r);
-        this.afid = null;
-        this.state = null;
     };
 
-    Damoo.version = "v2.1.4";
+    Damoo.version = "v2.1.6";
 
     Damoo.dom = window.document;
+
+    var _crop = function(c, x) {
+        var g = x.getImageData(0, 0, c.width, c.height);
+        for (var i = c.height - 1, j, w = 0, d = g.data; i >= 0; i--) {
+            for (j = c.width - 1; j >= 0; j--) {
+                if (d[(i * c.width + j) * 4 + 3] != 0) {
+                    if (j > w) {
+                        w = j + 1;
+                    }
+                }
+            }
+        }
+        c.width = w;
+        x.putImageData(g, 0, 0);
+    };
 
     var _preload = function(d, f) {
         var cvs = Damoo.dom.createElement('canvas'),
@@ -29,26 +42,16 @@
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
         if (d.shadow) {
-            ctx.fillStyle = "#fff";
-            ctx.fillStyle = d.shadow.color;
-            ctx.fillText(d.text, 1, 1);
+            ctx.shadowOffsetX = 1;
+            ctx.shadowOffsetY = 1;
+            ctx.shadowColor = "#fff";
+            ctx.shadowColor = d.shadow.color;
         }
         ctx.fillStyle = "#fff";
         ctx.fillStyle = d.color;
         ctx.fillText(d.text, 0, 0);
         if (d.fixed) {
-            var g = ctx.getImageData(0, 0, cvs.width, cvs.height);
-            for (var i = cvs.height - 1, j, w = 0, d = g.data; i >= 0; i--) {
-                for (j = cvs.width - 1; j >= 0; j--) {
-                    if (d[(i * cvs.width + j) * 4 + 3] != 0) {
-                        if (j > w) {
-                            w = j + 1;
-                        }
-                    }
-                }
-            }
-            cvs.width = w;
-            ctx.putImageData(g, 0, 0);
+            _crop(cvs, ctx);
         }
         return cvs;
     };
@@ -58,7 +61,7 @@
         window.webkitRequestAnimationFrame ||
         window.msRequestAnimationFrame ||
         window.oRequestAnimationFrame ||
-        function(cb) { setTimeout(cb, 17); };
+        function(cb) { return setTimeout(cb, 17); };
 
     var _CAF = window.cancelAnimationFrame ||
         window.mozCancelAnimationFrame ||
@@ -70,10 +73,12 @@
 
     Damoo.prototype.show = function() {
         this.canvas.parent.appendChild(this.canvas.layer);
+        return this;
     };
 
     Damoo.prototype.hide = function() {
         this.canvas.parent.removeChild(this.canvas.layer);
+        return this;
     };
 
     Damoo.prototype.emit = function(d) {
@@ -88,11 +93,15 @@
                 y: this.canvas.font.size * this.thread.index
             }
         });
+        return this;
     };
 
     Damoo.prototype.clear = function() {
         this.thread.empty();
+        return this;
     };
+
+    var _afid;
 
     var _render = function() {
         this.canvas.clear();
@@ -106,7 +115,7 @@
                 this.thread.remove(i);
             }
         }
-        this.afid = _RAF(function(self) {
+        _afid = _RAF(function(self) {
             return function() {
                 _render.call(self);
             };
@@ -114,19 +123,27 @@
     };
 
     Damoo.prototype.start = function() {
+        if (this.state === void 0) {
+            this.clear().show();
+        }
         if (!this.state) {
             _render.call(this);
             this.state = 1;
         }
+        return this;
     };
 
     Damoo.prototype.suspend = function() {
-        _CAF(this.afid);
+        if (this.state === void 0) {
+            return this;
+        }
+        _CAF(_afid);
         this.state = 0;
+        return this;
     };
 
     Damoo.prototype.resume = function() {
-        this.start();
+        return this.start();
     };
 
     var Canvas = function(m, n, r, t) {
@@ -134,11 +151,11 @@
         this.parent.style.position = "relative";
         this.id = n;
         this.rows = r;
+        this.width = this.parent.offsetWidth;
+        this.height = this.parent.offsetHeight;
         if (this.height / this.rows < 12) {
             this.rows = this.height / 12;
         }
-        this.width = this.parent.offsetWidth;
-        this.height = this.parent.offsetHeight;
         this.font = new Font(this.height / this.rows, t || "sans-serif");
         this.layer = Damoo.dom.createElement('canvas');
         this.context = this.layer.getContext('2d');

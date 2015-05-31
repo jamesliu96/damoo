@@ -9,6 +9,7 @@
     <meta name="description" content="Damoo by James Liu">
     <meta name="keywords" content="damoo,danmu,danmaku">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=0">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
     <style type="text/css">
     html, body, #dm-main {
         margin: 0;
@@ -30,13 +31,6 @@
         color: #aaa;
         text-decoration: underline;
     }
-    /* REMOVED MANUALLY on MAY 14 2015 */
-    /*#dm-main {
-        background-image: url(bg.png);
-        background-repeat: no-repeat;
-        background-position: top center;
-        background-attachment: fixed;
-    }*/
     #dm-screen {
         color: #888;
     }
@@ -59,16 +53,17 @@
 <script type="text/javascript" src="damoo.min.js"></script>
 <script type="text/javascript">
 <!--
-var scrn = document.getElementById('dm-screen');
-scrn.style.width = window.innerWidth + "px";
-scrn.style.height = window.innerHeight + "px";
-scrn.style.opacity = 1;
+(function(window) {
+    var scrn = window.document.getElementById('dm-screen');
+    scrn.style.width = window.innerWidth + "px";
+    scrn.style.height = window.innerHeight + "px";
+    scrn.style.opacity = 1;
+})(window);
 
 document.getElementById('dm-version').innerHTML = Damoo.version;
 
 var damoo = Damoo('dm-screen', 'dm-canvas', 20, "Arial");
 
-damoo.show();
 damoo.start();
 
 var addEvent = function(obj, nm, cb) {
