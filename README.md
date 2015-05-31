@@ -133,7 +133,7 @@ Hope you enjoy the code!
 
 你们城里人都很会玩，我就不多说了。
 
-_(:з」∠)_
+\_(:з」∠)\_
 
 Send [Pull Requests](https://github.com/jamesliu96/Damoo/pulls) to contribute!
 
