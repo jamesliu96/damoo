@@ -114,6 +114,41 @@ addEvent(document.body, "keypress", function(e) {
     }
     return false;
 });
+
+var list = [{ text: "美国 圣地亚戈 American Shengdiyage", color: "#6f9", fixed: true }
+,{ text: "我们需要金坷垃", color: "#6f9", shadow: true }
+,{ text: "非洲农业不发达", color: "#000", shadow: true }
+,{ text: "有了金坷垃，亩产一亿⑧", color: "#fff", shadow: { color: "#f00" } }
+,{ text: "日本资源太缺乏！", color: "#000", shadow: true }
+,{ text: "肥料掺了金坷垃！一袋能顶两袋撒！", color: "#000", shadow: true }
+,{ text: "没有金坷垃，怎么种庄稼？", color: "#f00", shadow: { color: "#6f9" } }
+,{ text: "肥料掺了金坷垃不流失！不蒸发！零浪费！", color: "#b8860b", shadow: { color: "#3a5" } }
+,{ text: "(╯°д°)╯︵ ┻━┻", color: "#fff" }
+,{ text: "用了金坷垃小麦亩产一千八，日本的粮食再也不向美国进口了！", color: "#000", shadow: { color: "#ff0" } }
+,{ text: "哈哈哈哈哈！", color: "#000", shadow: { color: "#ff0" } }
+,{ text: "小鬼子，真不傻！", color: "#b8860b", shadow: true }
+,{ text: "金坷垃给了他，对美国农业危害大，绝不能给他。", color: "#b8860b", shadow: true }
+,{ text: "非洲农业不发达，我们都要支援他。", color: "#000", shadow: true }
+,{ text: "金坷垃，你们日本别想了！", color: "#b8860b", shadow: true }
+,{ text: "金坷垃！金坷垃！我们的！我们的！", color: "#f49" }
+,{ text: "非洲农业不发达", color: "#000", shadow: true }
+,{ text: "日本资源太缺乏！", color: "#000", shadow: true }
+,{ text: "有了金坷垃，亩产一亿⑧", color: "#fff", shadow: { color: "#f00" } }
+,{ text: "(╯°д°)╯︵ ┻━┻", color: "#fff" }
+,{ text: "(╯°д°)╯︵ ┻━┻", color: "#fff" }
+,{ text: "(╯°д°)╯︵ ┻━┻", color: "#fff" }
+,{ text: "没有金坷垃，怎么种庄稼？", color: "#f00", shadow: { color: "#6f9" } }
+,{ text: "没有金坷垃，怎么种庄稼？", color: "#f00", shadow: { color: "#6f9" } }];
+
+var i = 0;
+
+var demoInterval = setInterval(function() {
+    if (list[i]) {
+        damoo.emit(list[i++]);
+    } else {
+        clearInterval(demoInterval);
+    }
+}, 150);
 -->
 </script>
 </body>
