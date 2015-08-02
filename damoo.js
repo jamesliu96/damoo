@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v2.1.6
+ * Damoo - HTML5 Danmaku Engine v2.1.7
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015 James Liu
@@ -14,7 +14,7 @@
         this.thread = new Thread(r);
     };
 
-    Damoo.version = "v2.1.6";
+    Damoo.version = "v2.1.7";
 
     Damoo.dom = window.document;
 
@@ -147,8 +147,7 @@
     };
 
     var Canvas = function(m, n, r, t) {
-        this.parent = Damoo.dom.getElementById(m);
-        this.parent.style.position = "relative";
+        this.parent = m.nodeType == 1 ? m : Damoo.dom.getElementById(m);
         this.id = n;
         this.rows = r;
         this.width = this.parent.offsetWidth;
@@ -164,9 +163,16 @@
         this.layer.height = this.height;
         this.layer.style.display = "block";
         this.layer.style.backgroundColor = "transparent";
-        this.layer.style.position = "absolute";
-        this.layer.style.left = 0;
-        this.layer.style.top = 0;
+        if (this.parent.style.position) {
+            this.layer.style.position = "fixed";
+            this.layer.style.left = this.parent.offsetLeft;
+            this.layer.style.top = this.parent.offsetTop;
+        } else {
+            this.parent.style.position = "relative";
+            this.layer.style.position = "absolute";
+            this.layer.style.left = 0;
+            this.layer.style.top = 0;
+        }
         this.layer.style.zIndex = 99999;
     };
 

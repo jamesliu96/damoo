@@ -40,6 +40,14 @@ Initiate Damoo.
 var damoo = Damoo('dm-screen', 'dm-canvas', 20);
 ```
 
+Or by binding an element.
+
+可绑定元素。
+
+```javascript
+var damoo = Damoo(document.getElementById('dm-screen'), 'dm-canvas', 20);
+```
+
 Or use your own font instead of "sans-serif".
 
 可自定义全局字体。
