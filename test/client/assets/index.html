@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>Damoo</title>
+    <meta name="author" content="James Liu">
+    <meta name="description" content="Damoo by James Liu">
+    <meta name="keywords" content="damoo,danmu,danmaku">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=0">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <style type="text/css">
+    html, body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    html {
+        background: transparent;
+    }
+    body {
+        background-color: #000;
+        background-image: url(img/bg-0.png);
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-attachment: fixed;
+        margin: 10px;
+        font: normal 14px/1.2em Helvatica, Arial, sans-serif;
+    }
+    #dm-main {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        color: #fff;
+        background-color: transparent;
+        text-align: center;
+    }
+    #dm-color-picker {
+        padding: 5px;
+        background-color: white;
+        float: left;
+        border-radius: 5px;
+    }
+    #dm-picker-wrapper, #dm-slide-wrapper {
+        position: relative;
+        float: left;
+    }
+    #dm-slide-wrapper {
+        margin-left: 5px;
+    }
+    #dm-picker-indicator, #dm-slide-indicator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+    }
+    #dm-slide-indicator {
+        width: 100%;
+        height: 2px;
+        left: 0px;
+        background-color: black;
+    }
+    #dm-picker-indicator {
+        width: 1px;
+        height: 1px;
+        border: 1px solid black;
+        background-color: white;
+    }
+    #dm-picker, #dm-slide {
+        cursor: crosshair;
+        float: left;
+    }
+    #dm-picker {
+        width: 200px;
+        height: 200px;
+    }
+    #dm-slide {
+        width: 15px;
+        height: 200px;
+    }
+    #dm-shuffle {
+        margin-top: 5px;
+    }
+    #dm-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 10px;
+    }
+    #dm-editor {
+        color: #fff;
+        width: 100%;
+        background-color: transparent;
+        text-align: left;
+        font: normal 20px/1em Arial;
+        font-weight: 100;
+        border: 0;
+        border-radius: 0;
+        border-bottom: 2px solid #090;
+        outline: 0;
+    }
+    </style>
+</head>
+<body>
+    <div id="dm-main">
+        <div id="dm-color-picker">
+            <div id="dm-picker-wrapper">
+                <div id="dm-picker"></div>
+                <div id="dm-picker-indicator"></div>
+            </div>
+            <div id="dm-slide-wrapper">
+                <div id="dm-slide"></div>
+                <div id="dm-slide-indicator"></div>
+            </div>
+            <div id="dm-button-wrapper">
+                <button id="dm-shuffle">Shuffle</button>
+                <button id="dm-reset">Reset</button>
+            </div>
+        </div>
+        <div id="dm-bar">
+            <input type="text" id="dm-editor" placeholder="Hmmm..." disabled style="opacity: 0.2;">
+        </div>
+    </div>
+<script type="text/javascript" src="js/socket.io.js"></script>
+<script type="text/javascript" src="js/colorpicker.min.js"></script>
+<script type="text/javascript">
+<!--
+var host = "172.20.248.45",
+    port = 3310;
+
+var socket = io("ws://" + host + ":" + port);
+
+var $ = function(id) { return document.getElementById(id) };
+
+var ed = $('dm-editor'), color;
+
+var cp = ColorPicker($('dm-slide'), $('dm-picker'), function(hex, hsv, rgb, pk, sl) {
+    color = hex;
+    ed.style.borderBottomColor = hex;
+    ColorPicker.positionIndicators(
+        $('dm-slide-indicator'),
+        $('dm-picker-indicator'),
+        sl, pk
+    );
+}).setHex("#6f9");
+
+$('dm-shuffle').onclick = function() {
+    cp.setHex("#" + Math.random().toString(16).substring(2).substring(0, 6));
+};
+
+$('dm-reset').onclick = function() {
+    cp.setHex("#f00");
+};
+
+var changeState = function(n) {
+    if (n) {
+        ed.placeholder = "Hmmm...";
+        ed.disabled = false;
+        ed.style.opacity = "1";
+    } else {
+        ed.placeholder = "Wait...";
+        ed.disabled = true;
+        ed.style.opacity = "0.2";
+    }
+};
+
+socket.on("connect", function() {
+    changeState(true);
+});
+
+socket.on("disconnect", function() {
+    changeState(false);
+});
+
+var addEvent = function(obj, nm, cb) {
+    if (window.addEventListener) {
+        obj.addEventListener(nm, cb, false);
+    } else if (window.attachEvent) {
+        obj.attachEvent("on" + nm, cb);
+    }
+};
+
+addEvent($('dm-editor'), "keypress", function(e) {
+    if ((e.keyCode || e.which) == 13 && ed.value.trim()) {
+        changeState(false);
+        socket.emit("damoo", {
+            text: ed.value.trim(),
+            color: color
+        });
+        ed.value = "";
+        setTimeout(function() {
+            changeState(true);
+            ed.focus();
+        }, 3000);
+    }
+    return false;
+});
+-->
+</script>
+</body>
+</html>

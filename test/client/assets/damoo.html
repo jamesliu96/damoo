@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>Damoo</title>
+    <meta name="author" content="James Liu">
+    <meta name="description" content="Damoo by James Liu">
+    <meta name="keywords" content="damoo,danmu,danmaku">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=0">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <style type="text/css">
+    html, body, #dm-main {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font: 18px Menlo, monospace;
+    }
+    html {
+        background: transparent;
+    }
+    body {
+        background-color: #000;
+    }
+    #dm-main {
+        background-image: url(img/bg.png);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-attachment: fixed;
+    }
+    #dm-screen {
+        color: #888;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    #dm-canvas {
+        cursor: none;
+    }
+    </style>
+</head>
+<body>
+    <div id="dm-main">
+        <div id="dm-screen"><span id="dm-version"></span></div>
+    </div>
+<script type="text/javascript" src="js/socket.io.js"></script>
+<script type="text/javascript" src="js/damoo.js"></script>
+<script type="text/javascript">
+<!--
+
+/* =LANDING= */
+
+(function(window) {
+    var scrn = window.document.getElementById('dm-screen');
+    scrn.style.width = window.innerWidth + "px";
+    scrn.style.height = window.innerHeight + "px";
+    scrn.style.opacity = 1;
+
+    var addEvent = function(obj, nm, cb) {
+        if (window.addEventListener) {
+            obj.addEventListener(nm, cb, false);
+        } else if (window.attachEvent) {
+            obj.attachEvent("on" + nm, cb);
+        }
+    };
+
+    addEvent(document.body, "keypress", function(e) {
+        var keyCode = e.keyCode || e.which;
+        switch (keyCode) {
+            case 47:
+                damoo.clear();
+                break;
+            case 60:
+                if (scrn.style.opacity > 0) {
+                    scrn.style.opacity = Number(scrn.style.opacity) - 0.1;
+                }
+                break;
+            case 62:
+                if (scrn.style.opacity < 1) {
+                    scrn.style.opacity = Number(scrn.style.opacity) + 0.1;
+                }
+                break;
+        }
+        return false;
+    });
+})(window);
+
+/* =DAMOO= */
+
+document.getElementById('dm-version').innerHTML = 'Damoo ' + Damoo.version + '<br>Proudly made with <span style="color:#f44">❤</span> by James Liu';
+
+var damoo = Damoo('dm-screen', 'dm-canvas', 20, "Arial");
+
+damoo.start();
+
+/* =MATCH= */
+
+var Match = {};
+
+Match.list = "呆逼;傻逼;二逼;死逼;穷逼;笨蛋;白痴;王八;三八;贱人;婊;妈的;奶的;去死;操;草;屌;cao;艹;他妈;她妈;尼玛;你妈;妳妈;Amma;艾玛;王淑艳;ned;randall;andy;你妈;阮爱迪;翟晓宁;刘彭芝;鸡巴;你丫;鸡鸡;jb;penis;anus;ass;fuck;shit;bitch;jerk;hate;sb;下台;滚;下台;住口;不好玩;没意思;无聊;日了狗;日狗;屁股;QQ;死;xo;奶;gay;下面;包养;屎;日;神经病;同性恋;开房;床;爆;胸;黑丝;菜b;黄.*片;上我;干我;蠢";
+
+Match.list = Match.list.split(';');
+
+Match.test = function(s) {
+    var t = Match.list;
+    for (var i = 0; i < t.length; i++) {
+        if (new RegExp(t[i], "gim").test(s)) {
+            return true;
+        }
+    }
+    return false;
+};
+
+Object.defineProperty(window, 'cc', {
+    get: function() {
+        this.damoo.clear();
+    }
+});
+
+Object.defineProperty(window, 'll', {
+    get: function() {
+        return this.Match.list;
+    },
+    set: function(d) {
+        if ("string" === typeof d) {
+            this.Match.list.push(d);
+        } else {
+            this.Match.list.splice(d, 1);
+        }
+    }
+});
+
+/* =SOCKET= */
+
+var host = "172.20.248.45",
+    port = 3310;
+
+var socket = io("ws://" + host + ":" + port);
+
+socket.on("connect", function() {
+    damoo.emit({ text: "@服务器连接成功", color: "#6f9" });
+});
+socket.on("damoo", function(message) {
+    if (!Match.test(message.text)) {
+        damoo.emit({ text: message.text, color: message.color, fixed: message.fixed, shadow: message.shadow });
+    }
+});
+socket.on("disconnect", function() {
+    damoo.emit({ text: "@服务器连接失败", color: "#f49" });
+});
+
+-->
+</script>
+</body>
+</html>
