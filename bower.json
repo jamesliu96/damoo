@@ -1,0 +1,24 @@
+{
+  "name": "damoo",
+  "homepage": "https://github.com/jamesliu96/Damoo",
+  "authors": [
+    "James Liu <jamesleu96@gmail.com>"
+  ],
+  "description": "An HTML5 Danmaku Engine",
+  "main": "src/damoo.js",
+  "moduleType": [],
+  "keywords": [
+    "danmaku",
+    "damoo",
+    "html5",
+    "frontend"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
