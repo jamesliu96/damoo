@@ -6,7 +6,9 @@
   ],
   "description": "An HTML5 Danmaku Engine",
   "main": "src/damoo.js",
-  "moduleType": [],
+  "moduleType": [
+    "globals"
+  ],
   "keywords": [
     "danmaku",
     "damoo",
