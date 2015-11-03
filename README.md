@@ -7,15 +7,26 @@ An HTML5 Danmaku Engine.
 
 [![Demo](https://cloud.githubusercontent.com/assets/2211002/9020607/5be8bea8-3849-11e5-8e60-050179779374.png)](http://damoo.jamesliu.info/)
 
-[![Demo GIF](https://cloud.githubusercontent.com/assets/2211002/10910122/70da302e-81f2-11e5-8f11-2e21e33bfe11.gif)
-](http://damoo.jamesliu.info/)
+[![Demo GIF](https://cloud.githubusercontent.com/assets/2211002/10910122/70da302e-81f2-11e5-8f11-2e21e33bfe11.gif)](http://damoo.jamesliu.info/)
 
 Getting started 走起
 ------
 
-[Download](https://github.com/jamesliu96/Damoo/releases) the latest release.
+Use [Bower](http://bower.io/) .
 
-[下载](https://github.com/jamesliu96/Damoo/releases)最新发行版本。
+使用 [Bower](http://bower.io/)。
+
+```
+$ bower install damoo
+```
+
+Damoo will be installed to `bower_components/` directory.
+
+安装至`bower_components/`目录下。
+
+Or [download](https://github.com/jamesliu96/Damoo/releases) the latest release.
+
+或[下载](https://github.com/jamesliu96/Damoo/releases)最新发行版本。
 
 Damoo requires a complete DOM with a suitable container to be fit in.
 
