@@ -86,6 +86,14 @@ Danmaku can be emitted by calling `emit` method.
 damoo.emit({ text: "Damoo is awesome!", color: "#f49" });
 ```
 
+Add hyper link if you want to let the danmaku clickable
+
+加入超链接使弹幕能够点击跳转
+
+```javascript
+damoo.emit({ text: "Damoo is awesome!", color: "#f49", link : "script/Damoo.js"});
+```
+
 Enable text shadow.
 
 开启字体阴影。
