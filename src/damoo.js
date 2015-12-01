@@ -5,6 +5,7 @@
  * Copyright (c) 2015 James Liu
  * Released under the MIT license
  */
+
 ;(function(window) {
     var Damoo = function(m, n, r, t) {
         if (!(this instanceof Damoo)) {
@@ -12,6 +13,7 @@
         }
         this.canvas = new Canvas(m, n, r, t);
         this.thread = new Thread(r);
+        this.colorPallete = new ColorPallete();
     };
 
     Damoo.version = "v2.1.7";
@@ -65,7 +67,7 @@
             ctx.shadowColor = "#fff";
             ctx.shadowColor = d.shadow.color;
         }
-        ctx.fillStyle = d.color || "#fff";
+        ctx.fillStyle = d.color;
         ctx.fillText(d.text, 0, 0);
         if (d.link) {
             cvs.link = _createHyperLink(d.link, cvs.width, cvs.height);
@@ -99,7 +101,12 @@
     };
 
     Damoo.prototype.emit = function(d) {
+        d.color = this.colorPallete.arrangeColor(d);
         var cvs = _preload(d, this.canvas.font);
+        //if the danmaku is too long to place, set the fixed as false
+        if (cvs.width > 0.8 * this.canvas.width) {
+            d.fixed = false;
+        }
         this.thread.push({
             canvas: cvs,
             fixed: d.fixed,
@@ -163,6 +170,15 @@
     Damoo.prototype.resume = function() {
         return this.start();
     };
+
+    Damoo.prototype.autoColor = function() {
+        if (arguments.length >= 1) {
+            this.colorPallete.autoArrange = argument[0];
+        } else {
+            this.colorPallete.autoArrange = !this.colorPallete.autoArrange;
+        }
+        return this;
+    }
 
     var Canvas = function(m, n, r, t) {
         this.parent = m.nodeType == 1 ? m : Damoo.dom.getElementById(m);
@@ -264,6 +280,24 @@
             return this.pool.length;
         }
     });
+
+    var ColorPallete = function() {
+        this.colorPool = ["#748CB2", "#9CC677", "#EACF5E", "#F9AD79",
+          "#D16A7C", "#8873A2", "#3A95B3", "#B6D949", "#FDD36C", "#F47958",
+          "#A65084", "#0063B1", "#0DA841", "#FCB71D", "#F05620", "#B22D6E",
+          "#3C368E", "#8FB2CF", "#95D4AB", "#EAE98F", "#F9BE92", "#EC9A99",
+          "#BC98BD", "#1EB7B2", "#73C03C", "#F48323", "#EB271B", "#D9B5CA",
+          "#AED1DA", "#DFECB2", "#FCDAB0", "#F5BCB4"
+        ],
+        this.current = 0;
+        this.autoArrange = false;
+    }
+
+    ColorPallete.prototype.arrangeColor = function(d) {
+        var color = d.color || this.autoArrange ? this.colorPool[this.current] : "#000";
+        this.current = this.current === this.colorPool.length ? this.current = 0 : this.current = this.current + 1;
+        return color;
+    }
 
     window.Damoo = Damoo;
 })(window);
