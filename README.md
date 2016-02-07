@@ -83,6 +83,10 @@ Danmaku can be emitted by calling `emit` method.
 用`emit`方法发射弹幕。
 
 ```javascript
+// Simple
+damoo.emit("Damoo is awesome!");
+
+// With attributes
 damoo.emit({ text: "Damoo is awesome!", color: "#f49" });
 ```
 
@@ -169,7 +173,7 @@ License 许可协议
 ```
 The MIT License (MIT)
 
-Copyright (c) 2015 James Liu
+Copyright (c) 2015-2016 James Liu
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
