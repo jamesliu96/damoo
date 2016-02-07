@@ -5,9 +5,9 @@ An HTML5 Danmaku Engine.
 
 一个不起眼的 HTML5 弹幕引擎。
 
-[![Demo](https://cloud.githubusercontent.com/assets/2211002/9020607/5be8bea8-3849-11e5-8e60-050179779374.png)](http://damoo.jamesliu.info/)
-
 [![Demo GIF](https://cloud.githubusercontent.com/assets/2211002/10910122/70da302e-81f2-11e5-8f11-2e21e33bfe11.gif)](http://damoo.jamesliu.info/)
+
+[![Demo](https://cloud.githubusercontent.com/assets/2211002/9020607/5be8bea8-3849-11e5-8e60-050179779374.png)](http://damoo.jamesliu.info/)
 
 Youtube extension Youtube 插件
 ------
