@@ -9,6 +9,13 @@ An HTML5 Danmaku Engine.
 
 [![Demo GIF](https://cloud.githubusercontent.com/assets/2211002/10910122/70da302e-81f2-11e5-8f11-2e21e33bfe11.gif)](http://damoo.jamesliu.info/)
 
+Youtube extension Youtube 插件
+------
+
+[Click to see](https://gist.github.com/96576d2420877e7729fb) Damoo extension script for YouTube live chat.
+
+[进入](https://gist.github.com/96576d2420877e7729fb) YouTube 在线聊天 Damoo 插件页面。
+
 Getting started 走起
 ------
 
