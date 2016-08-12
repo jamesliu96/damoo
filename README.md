@@ -3,7 +3,7 @@ Damoo [![Join Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im
 
 An HTML5 Danmaku Engine.
 
-一个不起眼的 HTML5 弹幕引擎。
+一个<s>不起眼</s>小小的 HTML5 弹幕引擎。
 
 [![Demo GIF](https://cloud.githubusercontent.com/assets/2211002/10910122/70da302e-81f2-11e5-8f11-2e21e33bfe11.gif)](http://damoo.jamesliu.info/)
 

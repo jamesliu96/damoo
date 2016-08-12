@@ -101,11 +101,9 @@
                 this.thread.remove(i);
             }
         }
-        _afid = _RAF(function(self) {
-            return function() {
-                _render.call(self);
-            };
-        }(this));
+        _afid = _RAF(function() {
+            _render.call(this);
+        }.bind(this));
     };
 
     Damoo.prototype.start = function() {
