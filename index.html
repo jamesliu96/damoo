@@ -53,12 +53,10 @@
 <script type="text/javascript" src="damoo.min.js"></script>
 <script type="text/javascript">
 <!--
-(function(window) {
-    var scrn = window.document.getElementById('dm-screen');
-    scrn.style.width = window.innerWidth + "px";
-    scrn.style.height = window.innerHeight + "px";
-    scrn.style.opacity = 1;
-})(window);
+var scrn = window.document.getElementById('dm-screen');
+scrn.style.width = window.innerWidth + "px";
+scrn.style.height = window.innerHeight + "px";
+scrn.style.opacity = 1;
 
 document.getElementById('dm-version').innerHTML = Damoo.version;
 
