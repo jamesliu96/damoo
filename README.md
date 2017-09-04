@@ -58,7 +58,7 @@ Initiate Damoo.
 初始化。
 
 ```javascript
-var damoo = Damoo('dm-screen', 'dm-canvas', 20);
+var damoo = new Damoo('dm-screen', 'dm-canvas', 20);
 ```
 
 Or by binding an element.
@@ -66,7 +66,7 @@ Or by binding an element.
 可绑定元素。
 
 ```javascript
-var damoo = Damoo(document.getElementById('dm-screen'), 'dm-canvas', 20);
+var damoo = new Damoo(document.getElementById('dm-screen'), 'dm-canvas', 20);
 ```
 
 Or use your own font instead of "sans-serif".
@@ -74,7 +74,7 @@ Or use your own font instead of "sans-serif".
 可自定义全局字体。
 
 ```javascript
-var damoo = Damoo('dm-screen', 'dm-canvas', 20, "Arial");
+var damoo = new Damoo('dm-screen', 'dm-canvas', 20, "Arial");
 ```
 
 And run it.
@@ -82,7 +82,7 @@ And run it.
 运行。
 
 ```javascript
-damoo.start();
+damoo.play();
 ```
 
 Danmaku can be emitted by calling `emit` method.
@@ -145,12 +145,12 @@ And bring it back.
 damoo.show();
 ```
 
-If needed, you may suspend the animation.
+If needed, you may pause the animation.
 
 暂停动画。
 
 ```javascript
-damoo.suspend();
+damoo.pause();
 ```
 
 And resume it when ready to go.
@@ -180,7 +180,7 @@ License 许可协议
 ```
 The MIT License (MIT)
 
-Copyright (c) 2015-2016 James Liu
+Copyright (c) 2015-2017 James Liu
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
