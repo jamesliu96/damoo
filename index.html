@@ -50,42 +50,41 @@
     <div id="dm-main">
         <div id="dm-screen"><div id="dm-info">Damoo <span id="dm-version"></span> by James Liu (<a href="https://github.com/jamesliu96/Damoo">source code</a>)<br>Press Enter to send a message<br>Press Space to suspend/resume<br>Press / to clear the screen<br>Press Shift + , to decrease the opacity<br>Press Shift + . to increase the opacity</div></div>
     </div>
-<script type="text/javascript" src="damoo.min.js"></script>
+<script type="text/javascript" src="damoo.js"></script>
 <script type="text/javascript">
-<!--
 var scrn = window.document.getElementById('dm-screen');
-scrn.style.width = window.innerWidth + "px";
-scrn.style.height = window.innerHeight + "px";
+scrn.style.width = window.innerWidth + 'px';
+scrn.style.height = window.innerHeight + 'px';
 scrn.style.opacity = 1;
 
 document.getElementById('dm-version').innerHTML = Damoo.version;
 
-var damoo = Damoo('dm-screen', 'dm-canvas', 20, "Arial");
+var damoo = new Damoo('dm-screen', 'dm-canvas', 20, 'Helvatica');
 
-damoo.start();
+damoo.play();
 
 var addEvent = function(obj, nm, cb) {
     if (window.addEventListener) {
         obj.addEventListener(nm, cb, false);
     } else if (window.attachEvent) {
-        obj.attachEvent("on" + nm, cb);
+        obj.attachEvent('on' + nm, cb);
     }
 };
 
-damoo.emit({ text: "Welcome to Damoo", color: "#" + Math.random().toString(16).substring(2).substring(0, 6) });
+damoo.emit({ text: 'Welcome to Damoo', color: '#' + Math.random().toString(16).substring(2).substring(0, 6) });
 
-addEvent(document.body, "keypress", function(e) {
+addEvent(document.body, 'keypress', function(e) {
     var keyCode = e.keyCode || e.which;
     switch (keyCode) {
         case 13:
-            var text = prompt("Text?");
+            var text = prompt('Text?');
             if (!text) return;
-            var color = prompt("Text color? (#fff)");
-            var fixed = prompt("Fixed? (y/n)");
-            fixed = (fixed == "y" || fixed == "Y");
-            var shadow = prompt("Shadow? (y/n)");
-            if (shadow == "y" || shadow == "Y") {
-                shadow = { color: prompt("Shadow color? (#fff)") };
+            var color = prompt('Text color? (#fff)');
+            var fixed = prompt('Fixed? (y/n)');
+            fixed = (fixed == 'y' || fixed == 'Y');
+            var shadow = prompt('Shadow? (y/n)');
+            if (shadow == 'y' || shadow == 'Y') {
+                shadow = { color: prompt('Shadow color? (#fff)') };
             }
             damoo.emit({ text: text, color: color, fixed: fixed, shadow: shadow });
             break;
@@ -113,32 +112,32 @@ addEvent(document.body, "keypress", function(e) {
     return false;
 });
 
-var list = [{ text: "美国 圣地亚戈 American Shengdiyage", color: "#6f9", fixed: true }
-,{ text: "我们需要金坷垃", color: "#6f9", shadow: true }
-,{ text: "非洲农业不发达", color: "#000", shadow: true }
-,{ text: "有了金坷垃，亩产一亿⑧", color: "#fff", shadow: { color: "#f00" } }
-,{ text: "日本资源太缺乏！", color: "#000", shadow: true }
-,{ text: "肥料掺了金坷垃！一袋能顶两袋撒！", color: "#000", shadow: true }
-,{ text: "没有金坷垃，怎么种庄稼？", color: "#f00", shadow: { color: "#6f9" } }
-,{ text: "肥料掺了金坷垃不流失！不蒸发！零浪费！", color: "#b8860b", shadow: { color: "#3a5" } }
-,{ text: "(╯°д°)╯︵ ┻━┻", color: "#fff" }
-,{ text: "用了金坷垃小麦亩产一千八，日本的粮食再也不向美国进口了！", color: "#000", shadow: { color: "#ff0" } }
-,{ text: "哈哈哈哈哈！", color: "#000", shadow: { color: "#ff0" } }
-,{ text: "小鬼子，真不傻！", color: "#b8860b", shadow: true }
-,{ text: "金坷垃给了他，对美国农业危害大，绝不能给他。", color: "#b8860b", shadow: true }
-,{ text: "非洲农业不发达，我们都要支援他。", color: "#000", shadow: true }
-,{ text: "金坷垃，你们日本别想了！", color: "#b8860b", shadow: true }
-,{ text: "金坷垃！金坷垃！我们的！我们的！", color: "#f49" }
-,{ text: "非洲农业不发达", color: "#000", shadow: true }
-,{ text: "日本资源太缺乏！", color: "#000", shadow: true }
-,{ text: "有了金坷垃，亩产一亿⑧", color: "#fff", shadow: { color: "#f00" } }
-,{ text: "(╯°д°)╯︵ ┻━┻", color: "#fff" }
-,{ text: "(╯°д°)╯︵ ┻━┻", color: "#fff" }
-,{ text: "(╯°д°)╯︵ ┻━┻", color: "#fff" }
-,{ text: "没有金坷垃，怎么种庄稼？", color: "#f00", shadow: { color: "#6f9" } }
-,{ text: "没有金坷垃，怎么种庄稼？", color: "#f00", shadow: { color: "#6f9" } }
-,"这一条是默认的！"
-,"这一条也是！"];
+var list = [{ text: '美国 圣地亚戈 American Shengdiyage', color: '#6f9', fixed: true }
+,{ text: '我们需要金坷垃', color: '#6f9', shadow: true }
+,{ text: '非洲农业不发达', color: '#000', shadow: true }
+,{ text: '有了金坷垃，亩产一亿⑧', color: '#fff', shadow: { color: '#f00' } }
+,{ text: '日本资源太缺乏！', color: '#000', shadow: true }
+,{ text: '肥料掺了金坷垃！一袋能顶两袋撒！', color: '#000', shadow: true }
+,{ text: '没有金坷垃，怎么种庄稼？', color: '#f00', shadow: { color: '#6f9' } }
+,{ text: '肥料掺了金坷垃不流失！不蒸发！零浪费！', color: '#b8860b', shadow: { color: '#3a5' } }
+,{ text: '(╯°д°)╯︵ ┻━┻', color: '#fff' }
+,{ text: '用了金坷垃小麦亩产一千八，日本的粮食再也不向美国进口了！', color: '#000', shadow: { color: '#ff0' } }
+,{ text: '哈哈哈哈哈！', color: '#000', shadow: { color: '#ff0' } }
+,{ text: '小鬼子，真不傻！', color: '#b8860b', shadow: true }
+,{ text: '金坷垃给了他，对美国农业危害大，绝不能给他。', color: '#b8860b', shadow: true }
+,{ text: '非洲农业不发达，我们都要支援他。', color: '#000', shadow: true }
+,{ text: '金坷垃，你们日本别想了！', color: '#b8860b', shadow: true }
+,{ text: '金坷垃！金坷垃！我们的！我们的！', color: '#f49' }
+,{ text: '非洲农业不发达', color: '#000', shadow: true }
+,{ text: '日本资源太缺乏！', color: '#000', shadow: true }
+,{ text: '有了金坷垃，亩产一亿⑧', color: '#fff', shadow: { color: '#f00' } }
+,{ text: '(╯°д°)╯︵ ┻━┻', color: '#fff' }
+,{ text: '(╯°д°)╯︵ ┻━┻', color: '#fff' }
+,{ text: '(╯°д°)╯︵ ┻━┻', color: '#fff' }
+,{ text: '没有金坷垃，怎么种庄稼？', color: '#f00', shadow: { color: '#6f9' } }
+,{ text: '没有金坷垃，怎么种庄稼？', color: '#f00', shadow: { color: '#6f9' } }
+,'这一条是默认的！'
+,'这一条也是！'];
 
 var i = 0;
 
@@ -149,7 +148,6 @@ var demoInterval = setInterval(function() {
         clearInterval(demoInterval);
     }
 }, 150);
--->
 </script>
 </body>
 </html>
