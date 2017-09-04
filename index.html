@@ -103,7 +103,7 @@ addEvent(document.body, 'keypress', function(e) {
             break;
         case 32:
             if (damoo.state) {
-                damoo.suspend();
+                damoo.pause();
             } else {
                 damoo.resume();
             }
