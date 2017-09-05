@@ -1,13 +1,13 @@
 Damoo [![Join Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jamesliu96/Damoo)
 ======
 
-An HTML5 Danmaku Engine.
+A lightweight HTML5 Danmaku Engine.
 
-一个<s>不起眼</s>小小的 HTML5 弹幕引擎。
+一个轻量 HTML5 弹幕引擎。
 
-[![Demo GIF](https://cloud.githubusercontent.com/assets/2211002/10910122/70da302e-81f2-11e5-8f11-2e21e33bfe11.gif)](http://damoo.jamesliu.info/)
+[![Demo GIF](https://github.com/jamesliu96/Damoo/raw/gh-pages/screenshot.gif)](http://damoo.jamesliu.info/)
 
-[![Demo](https://cloud.githubusercontent.com/assets/2211002/9020607/5be8bea8-3849-11e5-8e60-050179779374.png)](http://damoo.jamesliu.info/)
+[![Demo](https://github.com/jamesliu96/Damoo/raw/gh-pages/screenshot.png)](http://damoo.jamesliu.info/)
 
 Youtube extension Youtube 插件
 ------
