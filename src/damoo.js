@@ -1,5 +1,5 @@
 /*!
- * Damoo - HTML5 Danmaku Engine v2.2.1
+ * Damoo - HTML5 Danmaku Engine v2.3.0
  * https://github.com/jamesliu96/Damoo
  *
  * Copyright (c) 2015-2017 James Liu
@@ -65,7 +65,7 @@
 
   function _preload(d, f) {
     var cvs = Damoo.dom.createElement('canvas'),
-      ctx = cvs.getContext('2d');
+        ctx = cvs.getContext('2d');
     ctx.font = f;
     cvs.width = ctx.measureText(d.text).width;
     cvs.height = f.size * 1.5;
@@ -85,19 +85,19 @@
   }
 
   var _RAF = window.requestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.msRequestAnimationFrame ||
-    window.oRequestAnimationFrame ||
-    function(cb) { return setTimeout(cb, 17); };
+      window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      function(cb) { return setTimeout(cb, 17); };
 
   var _CAF = window.cancelAnimationFrame ||
-    window.mozCancelAnimationFrame ||
-    window.webkitCancelAnimationFrame ||
-    window.webkitCancelRequestAnimationFrame ||
-    window.msCancelAnimationFrame ||
-    window.oCancelAnimationFrame ||
-    function(id) { clearTimeout(id); };
+      window.mozCancelAnimationFrame ||
+      window.webkitCancelAnimationFrame ||
+      window.webkitCancelRequestAnimationFrame ||
+      window.msCancelAnimationFrame ||
+      window.oCancelAnimationFrame ||
+      function(id) { clearTimeout(id); };
 
   function _render() {
     this.canvas.clear();
@@ -111,18 +111,17 @@
         this.thread.remove(i);
       }
     }
-    this._afid = _RAF(function() {
-      _render.call(this);
-    }.bind(this));
+    this._afid = _RAF(_render.bind(this));
   }
 
   class Canvas {
     constructor(m, n, r, t) {
+      this.dpr = window.devicePixelRatio || 1;
       this.parent = m.nodeType == 1 ? m : Damoo.dom.getElementById(m);
       this.id = n;
       this.rows = r;
-      this.width = this.parent.offsetWidth;
-      this.height = this.parent.offsetHeight;
+      this.width = this.parent.offsetWidth * this.dpr;
+      this.height = this.parent.offsetHeight * this.dpr;
       if (this.height / this.rows < 12) {
         this.rows = this.height / 12;
       }
@@ -132,6 +131,8 @@
       this.layer.id = this.id;
       this.layer.width = this.width;
       this.layer.height = this.height;
+      this.layer.style.width = this.width / this.dpr + 'px';
+      this.layer.style.height = this.height / this.dpr + 'px';
       this.layer.style.display = 'block';
       this.layer.style.backgroundColor = 'transparent';
       if (this.parent.style.position) {
@@ -196,7 +197,7 @@
     }
   }
 
-  Damoo.version = 'v2.2.1';
+  Damoo.version = 'v2.3.0';
 
   Damoo.dom = window.document;
 
