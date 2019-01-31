@@ -2,7 +2,7 @@
  * Damoo - HTML5 Danmaku Engine v2.3.0
  * https://github.com/jamesliu96/Damoo
  *
- * Copyright (c) 2015-2017 James Liu
+ * Copyright (c) 2015-2019 James Liu
  * Released under the MIT license
  */
 ;(window => {

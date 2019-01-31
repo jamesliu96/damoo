@@ -4,7 +4,7 @@
   "authors": [
     "James Liu <j@jamesliu.info>"
   ],
-  "description": "An HTML5 Danmaku Engine",
+  "description": "Lightweight HTML5 Canvas Danmaku Engine",
   "main": "src/damoo.js",
   "moduleType": [
     "globals"

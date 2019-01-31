@@ -1,7 +1,7 @@
 Damoo [![Join Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jamesliu96/Damoo)
 ======
 
-A lightweight HTML5 Danmaku Engine.
+Lightweight Canvas HTML5 Danmaku Engine.
 
 一个轻量 HTML5 弹幕引擎。
 
@@ -180,7 +180,7 @@ License 许可协议
 ```
 The MIT License (MIT)
 
-Copyright (c) 2015-2017 James Liu
+Copyright (c) 2015-2019 James Liu
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
