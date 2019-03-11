@@ -5,8 +5,6 @@ Lightweight Canvas HTML5 Danmaku Engine.
 
 一个轻量 HTML5 弹幕引擎。
 
-[![Demo GIF](https://github.com/jamesliu96/Damoo/raw/gh-pages/screenshot.gif)](http://damoo.jamesliu.info/)
-
 [![Demo](https://github.com/jamesliu96/Damoo/raw/gh-pages/screenshot.png)](http://damoo.jamesliu.info/)
 
 Youtube extension Youtube 插件
