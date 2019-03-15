@@ -1,11 +1,11 @@
-Damoo [![Join Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jamesliu96/Damoo)
+Damoo [![Join Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jamesliu96/damoo)
 ======
 
 Lightweight Canvas HTML5 Danmaku Engine.
 
 一个轻量 HTML5 弹幕引擎。
 
-[![Demo](https://github.com/jamesliu96/Damoo/raw/gh-pages/screenshot.png)](http://damoo.jamesliu.info/)
+[![Demo](https://github.com/jamesliu96/damoo/raw/gh-pages/screenshot.png)](https://damoo.jamesliu.info/)
 
 Youtube extension Youtube 插件
 ------
@@ -29,9 +29,9 @@ Damoo will be installed to `bower_components/` directory.
 
 安装至`bower_components/`目录下。
 
-Or [download](https://github.com/jamesliu96/Damoo/releases) the latest release.
+Or [download](https://github.com/jamesliu96/damoo/releases) the latest release.
 
-或[下载](https://github.com/jamesliu96/Damoo/releases)最新发行版本。
+或[下载](https://github.com/jamesliu96/damoo/releases)最新发行版本。
 
 Damoo requires a complete DOM with a suitable container to be fit in.
 
@@ -168,9 +168,9 @@ Hope you enjoy the code!
 
 \_(:з」∠)\_
 
-Send [Pull Requests](https://github.com/jamesliu96/Damoo/pulls) to contribute!
+Send [Pull Requests](https://github.com/jamesliu96/damoo/pulls) to contribute!
 
-想填坑的话，请发送 [Pull Requests](https://github.com/jamesliu96/Damoo/pulls)。
+想填坑的话，请发送 [Pull Requests](https://github.com/jamesliu96/damoo/pulls)。
 
 License 许可协议
 ------
