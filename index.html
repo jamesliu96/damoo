@@ -7,11 +7,11 @@
 	<title>Damoo</title>
 	<link rel="icon" type="image/png" href="/favicon.png">
 	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-	<style type="text/css">#dm-main,body,html{margin:0;padding:0;border:0;overflow:hidden;font:20px Menlo,monospace}html{background:0 0}body{background-color:#000}a,a:active,a:visited{color:#888;text-decoration:none}a:hover{color:#aaa;text-decoration:underline}#dm-screen{color:#888}#dm-info{padding:10px;border-radius:3px;display:block;position:absolute;left:0;top:0;z-index:100000;background-color:hsla(0,0%,100%,.2)}</style>
+	<style type="text/css">#dm-main,body,html{margin:0;padding:0;border:0;overflow:hidden;font:20px Menlo,monospace}html{background:0 0}body{background-color:#000}a,a:active,a:visited{color:#888;text-decoration:none}code:hover,a:hover{color:#aaa;text-decoration:underline}#dm-screen{color:#888}#dm-info{padding:10px;display:block;position:absolute;left:0;top:0;z-index:100000;background-color:hsla(0,0%,100%,.2)}</style>
 </head>
 <body>
 	<div id="dm-main">
-		<div id="dm-screen"><div id="dm-info">Damoo <span id="dm-version"></span> by <a href="https://jamesliu.info">James Liu</a> (<a href="https://github.com/jamesliu96/Damoo">source code</a>)<br>Press Enter to send a message<br>Press Space to suspend/resume<br>Press / to clear the screen<br>Press Shift + , to decrease the opacity<br>Press Shift + . to increase the opacity</div></div>
+		<div id="dm-screen"><div id="dm-info">Damoo <span id="dm-version"></span> by <a href="https://jamesliu.info">James Liu</a> (<a href="https://github.com/jamesliu96/Damoo">source code</a>)<br>press <code onclick="sendmessage()">ENTER</code> to send message<br>press <code onclick="togglestate()">SPACE</code> to suspend/resume<br>press <code onclick="clearscreen()">/</code> to clear screen<br>press <code onclick="opacitydecrease()">SHIFT + ,</code> to decrease opacity<br>press <code onclick="opacityincrease()">SHIFT + .</code> to increase opacity</div></div>
 	</div>
 <script type="text/javascript" src="damoo.min.js"></script>
 <script type="text/javascript">
@@ -36,40 +36,60 @@ var addEvent = function(obj, nm, cb) {
 
 damoo.emit({ text: 'Welcome to Damoo', color: '#' + Math.random().toString(16).substring(2).substring(0, 6) });
 
+function sendmessage() {
+	var text = prompt('Text?');
+	if (!text) return;
+	var color = prompt('Text color? (#fff)');
+	var fixed = prompt('Fixed? (y/n)');
+	fixed = (fixed == 'y' || fixed == 'Y');
+	var shadow = prompt('Shadow? (y/n)');
+	if (shadow == 'y' || shadow == 'Y') {
+		shadow = { color: prompt('Shadow color? (#fff)') };
+	}
+	damoo.emit({ text: text, color: color, fixed: fixed, shadow: shadow });
+}
+
+function clearscreen() {
+	damoo.clear();
+}
+
+function opacitydecrease() {
+	if (scrn.style.opacity > 0) {
+		scrn.style.opacity = Number(scrn.style.opacity) - 0.1;
+	}
+}
+
+function opacityincrease() {
+	if (scrn.style.opacity < 1) {
+		scrn.style.opacity = Number(scrn.style.opacity) + 0.1;
+	}
+}
+
+function togglestate() {
+	if (damoo.state) {
+		damoo.pause();
+	} else {
+		damoo.resume();
+	}
+}
+
 addEvent(document.body, 'keypress', function(e) {
 	var keyCode = e.keyCode || e.which;
 	switch (keyCode) {
 		case 13:
-			var text = prompt('Text?');
-			if (!text) return;
-			var color = prompt('Text color? (#fff)');
-			var fixed = prompt('Fixed? (y/n)');
-			fixed = (fixed == 'y' || fixed == 'Y');
-			var shadow = prompt('Shadow? (y/n)');
-			if (shadow == 'y' || shadow == 'Y') {
-				shadow = { color: prompt('Shadow color? (#fff)') };
-			}
-			damoo.emit({ text: text, color: color, fixed: fixed, shadow: shadow });
+			sendmessage();
 			break;
 		case 47:
-			damoo.clear();
+			clearscreen();
 			break;
 		case 60:
-			if (scrn.style.opacity > 0) {
-				scrn.style.opacity = Number(scrn.style.opacity) - 0.1;
-			}
+			opacitydecrease();
 			break;
 		case 62:
-			if (scrn.style.opacity < 1) {
-				scrn.style.opacity = Number(scrn.style.opacity) + 0.1;
-			}
+			opacityincrease();
 			break;
 		case 32:
-			if (damoo.state) {
-				damoo.pause();
-			} else {
-				damoo.resume();
-			}
+			togglestate();
 			break;
 	}
 	return false;
