@@ -1,56 +1,18 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <title>Damoo</title>
-    <meta name="author" content="James Liu">
-    <meta name="description" content="Damoo by James Liu">
-    <meta name="keywords" content="damoo,danmu,danmaku">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-    <style type="text/css">
-    html, body, #dm-main {
-        margin: 0;
-        padding: 0;
-        border: 0;
-        overflow: hidden;
-        font: 22px Menlo, monospace;
-    }
-    html {
-        background: transparent;
-    }
-    body {
-        background-color: #000;
-    }
-    a, a:visited, a:active {
-        color: #888;
-        text-decoration: none;
-    }
-    a:hover {
-        color: #aaa;
-        text-decoration: underline;
-    }
-    #dm-screen {
-        color: #888;
-    }
-    #dm-info {
-        padding: 10px;
-        border-radius: 3px;
-        display: block;
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        z-index: 100000;
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-    </style>
+	<meta charset="utf-8">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>Damoo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0">
+	<link rel="icon" type="image/png" href="/favicon.png">
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<style type="text/css">#dm-main,body,html{margin:0;padding:0;border:0;overflow:hidden;font:20px Menlo,monospace}html{background:0 0}body{background-color:#000}a,a:active,a:visited{color:#888;text-decoration:none}a:hover{color:#aaa;text-decoration:underline}#dm-screen{color:#888}#dm-info{padding:10px;border-radius:3px;display:block;position:absolute;left:0;top:0;z-index:100000;background-color:hsla(0,0%,100%,.2)}</style>
 </head>
 <body>
-    <div id="dm-main">
-        <div id="dm-screen"><div id="dm-info">Damoo <span id="dm-version"></span> by James Liu (<a href="https://github.com/jamesliu96/Damoo">source code</a>)<br>Press Enter to send a message<br>Press Space to suspend/resume<br>Press / to clear the screen<br>Press Shift + , to decrease the opacity<br>Press Shift + . to increase the opacity</div></div>
-    </div>
+	<div id="dm-main">
+		<div id="dm-screen"><div id="dm-info">Damoo <span id="dm-version"></span> by <a href="https://jamesliu.info">James Liu</a> (<a href="https://github.com/jamesliu96/Damoo">source code</a>)<br>Press Enter to send a message<br>Press Space to suspend/resume<br>Press / to clear the screen<br>Press Shift + , to decrease the opacity<br>Press Shift + . to increase the opacity</div></div>
+	</div>
 <script type="text/javascript" src="damoo.min.js"></script>
 <script type="text/javascript">
 var scrn = window.document.getElementById('dm-screen');
@@ -65,52 +27,52 @@ var damoo = new Damoo('dm-screen', 'dm-canvas', 20, 'Helvetica');
 damoo.play();
 
 var addEvent = function(obj, nm, cb) {
-    if (window.addEventListener) {
-        obj.addEventListener(nm, cb, false);
-    } else if (window.attachEvent) {
-        obj.attachEvent('on' + nm, cb);
-    }
+	if (window.addEventListener) {
+		obj.addEventListener(nm, cb, false);
+	} else if (window.attachEvent) {
+		obj.attachEvent('on' + nm, cb);
+	}
 };
 
 damoo.emit({ text: 'Welcome to Damoo', color: '#' + Math.random().toString(16).substring(2).substring(0, 6) });
 
 addEvent(document.body, 'keypress', function(e) {
-    var keyCode = e.keyCode || e.which;
-    switch (keyCode) {
-        case 13:
-            var text = prompt('Text?');
-            if (!text) return;
-            var color = prompt('Text color? (#fff)');
-            var fixed = prompt('Fixed? (y/n)');
-            fixed = (fixed == 'y' || fixed == 'Y');
-            var shadow = prompt('Shadow? (y/n)');
-            if (shadow == 'y' || shadow == 'Y') {
-                shadow = { color: prompt('Shadow color? (#fff)') };
-            }
-            damoo.emit({ text: text, color: color, fixed: fixed, shadow: shadow });
-            break;
-        case 47:
-            damoo.clear();
-            break;
-        case 60:
-            if (scrn.style.opacity > 0) {
-                scrn.style.opacity = Number(scrn.style.opacity) - 0.1;
-            }
-            break;
-        case 62:
-            if (scrn.style.opacity < 1) {
-                scrn.style.opacity = Number(scrn.style.opacity) + 0.1;
-            }
-            break;
-        case 32:
-            if (damoo.state) {
-                damoo.pause();
-            } else {
-                damoo.resume();
-            }
-            break;
-    }
-    return false;
+	var keyCode = e.keyCode || e.which;
+	switch (keyCode) {
+		case 13:
+			var text = prompt('Text?');
+			if (!text) return;
+			var color = prompt('Text color? (#fff)');
+			var fixed = prompt('Fixed? (y/n)');
+			fixed = (fixed == 'y' || fixed == 'Y');
+			var shadow = prompt('Shadow? (y/n)');
+			if (shadow == 'y' || shadow == 'Y') {
+				shadow = { color: prompt('Shadow color? (#fff)') };
+			}
+			damoo.emit({ text: text, color: color, fixed: fixed, shadow: shadow });
+			break;
+		case 47:
+			damoo.clear();
+			break;
+		case 60:
+			if (scrn.style.opacity > 0) {
+				scrn.style.opacity = Number(scrn.style.opacity) - 0.1;
+			}
+			break;
+		case 62:
+			if (scrn.style.opacity < 1) {
+				scrn.style.opacity = Number(scrn.style.opacity) + 0.1;
+			}
+			break;
+		case 32:
+			if (damoo.state) {
+				damoo.pause();
+			} else {
+				damoo.resume();
+			}
+			break;
+	}
+	return false;
 });
 
 var list = [{ text: '美国 圣地亚戈 American Shengdiyage', color: '#6f9', fixed: true }
@@ -143,11 +105,11 @@ var list = [{ text: '美国 圣地亚戈 American Shengdiyage', color: '#6f9', f
 var i = 0;
 
 var demoInterval = setInterval(function() {
-    if (list[i]) {
-        damoo.emit(list[i++]);
-    } else {
-        clearInterval(demoInterval);
-    }
+	if (list[i]) {
+		damoo.emit(list[i++]);
+	} else {
+		clearInterval(demoInterval);
+	}
 }, 150);
 </script>
 </body>
