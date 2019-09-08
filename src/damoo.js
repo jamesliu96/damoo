@@ -23,7 +23,7 @@
       if ('string' === typeof d) {
         d = { text: d };
       }
-      var cvs = _preload(d, this.canvas.font);
+      let cvs = _preload(d, this.canvas.font);
       this.thread.push({
         canvas: cvs,
         fixed: d.fixed,
@@ -64,7 +64,7 @@
   }
 
   function _preload(d, f) {
-    var cvs = Damoo.dom.createElement('canvas'),
+    let cvs = Damoo.dom.createElement('canvas'),
         ctx = cvs.getContext('2d');
     ctx.font = f;
     cvs.width = ctx.measureText(d.text).width;
@@ -84,27 +84,27 @@
     return cvs;
   }
 
-  var _RAF = window.requestAnimationFrame ||
+  let _RAF = window.requestAnimationFrame ||
       window.mozRequestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
       window.msRequestAnimationFrame ||
       window.oRequestAnimationFrame ||
-      function(cb) { return setTimeout(cb, 17); };
+      (cb => setTimeout(cb, 17));
 
-  var _CAF = window.cancelAnimationFrame ||
+  let _CAF = window.cancelAnimationFrame ||
       window.mozCancelAnimationFrame ||
       window.webkitCancelAnimationFrame ||
       window.webkitCancelRequestAnimationFrame ||
       window.msCancelAnimationFrame ||
       window.oCancelAnimationFrame ||
-      function(id) { clearTimeout(id); };
+      (id => clearTimeout(id));
 
   function _render() {
     this.canvas.clear();
-    for (var i = 0; i < this.thread.pool.length; i++) {
-      var d = this.thread.get(i),
-        x = d.offset.x,
-        y = d.offset.y;
+    for (let i = 0; i < this.thread.pool.length; i++) {
+      let d = this.thread.get(i),
+          x = d.offset.x,
+          y = d.offset.y;
       this.canvas.draw(d, x, y);
       d.offset.x -= d.speed;
       if (x <= -d.canvas.width) {
@@ -185,7 +185,7 @@
       return this.pool[d];
     }
     remove(d) {
-      var i = this.get(d).index;
+      let i = this.get(d).index;
       if (this.index > i) {
         this.index = i;
       }
