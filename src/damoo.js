@@ -84,20 +84,20 @@
     return cvs;
   }
 
-  let _RAF = window.requestAnimationFrame ||
-      window.mozRequestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      window.msRequestAnimationFrame ||
-      window.oRequestAnimationFrame ||
-      (cb => setTimeout(cb, 17));
+  const _RAF = window.requestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        (cb => setTimeout(cb, 17));
 
-  let _CAF = window.cancelAnimationFrame ||
-      window.mozCancelAnimationFrame ||
-      window.webkitCancelAnimationFrame ||
-      window.webkitCancelRequestAnimationFrame ||
-      window.msCancelAnimationFrame ||
-      window.oCancelAnimationFrame ||
-      (id => clearTimeout(id));
+  const _CAF = window.cancelAnimationFrame ||
+        window.mozCancelAnimationFrame ||
+        window.webkitCancelAnimationFrame ||
+        window.webkitCancelRequestAnimationFrame ||
+        window.msCancelAnimationFrame ||
+        window.oCancelAnimationFrame ||
+        (id => clearTimeout(id));
 
   function _render() {
     this.canvas.clear();
